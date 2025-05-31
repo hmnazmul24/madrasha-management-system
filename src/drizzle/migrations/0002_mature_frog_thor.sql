@@ -1,0 +1,2 @@
+ALTER TABLE "teachers" ADD COLUMN "madrasha_id" uuid NOT NULL;--> statement-breakpoint
+ALTER TABLE "teachers" ADD CONSTRAINT "teachers_madrasha_id_madrasha_id_fk" FOREIGN KEY ("madrasha_id") REFERENCES "public"."madrasha"("id") ON DELETE cascade ON UPDATE no action;
