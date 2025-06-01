@@ -16,6 +16,7 @@ import { useRef } from "react";
 import logo from "../../../public/earn-way.png";
 import Login from "./Login";
 import { useUserAuth } from "./hooks/use-user";
+import RedirectBox from "./RedirectBox";
 
 const MarketingPage = () => {
   const { data: auth, isPending } = useUserAuth();
@@ -59,14 +60,14 @@ const MarketingPage = () => {
         }}
         className="flex items-center justify-center flex-col gap-3 z-30 p-4"
       >
-        <h2 className="text-lg md:text-4xl font-bold mb-4 text-black dark:text-emerald-500 max-w-4xl">
+        <h2 className="text-xl md:text-5xl font-bold mb-4 text-black dark:text-emerald-500 max-w-4xl">
           Madrasha Management System
         </h2>
         <p className="text-neutral-700 dark:text-neutral-300 text-center text-xs  md:text-base max-w-sm">
           A comprehensive student management system specially for madrasha
           students in Bangladesh
         </p>
-        <span className="text-blue-500">Powered By</span>
+        <span className="text-blue-500 text-xs">Powered By</span>
         <div className="flex items-center justify-center flex-col gap-2">
           <Image height={90} width={90} src={logo} alt="logo" />
           <p className="text-sm md:text-base text-center text-amber-500">
@@ -100,6 +101,7 @@ const MarketingPage = () => {
         )}
       </motion.div>
       {/* mainelement */}
+      {!isPending && auth && !auth.authenticated && <RedirectBox />}
     </div>
   );
 };

@@ -1,25 +1,60 @@
+import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import { env } from "./data/env/server";
 import { PayloadType } from "./types";
-import { ADMIN_ROUTE, HOME_ROUTE, MADRASHA_ROUTE } from "./routes";
+import {
+  ADMIN_ROUTE,
+  ADMIN_START,
+  COOKIE_NAME,
+  HOME_ROUTE,
+  MADRASHA_ROUTE,
+  MADRASHA_START,
+} from "./routes";
+import { cookies } from "next/headers";
 
 export async function middleware(req: NextRequest) {
-  const token = req.cookies.get("auth_token")?.value;
+  const token = req.cookies.get(COOKIE_NAME)?.value;
+
+  // for redirections
   const pathname = req.nextUrl.pathname;
   const homePath = pathname === HOME_ROUTE;
   const madrashaPath = pathname.startsWith(MADRASHA_ROUTE);
   const adminPath = pathname.startsWith(ADMIN_ROUTE);
+  console.log("coming", 1);
+
   if (!token && !homePath) {
     return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
   }
+  console.log("coming", 2);
   if (token && homePath) {
     return NextResponse.next();
   } else if (token && !homePath) {
     const secret = new TextEncoder().encode(env.JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
-    const { role } = payload as PayloadType;
+    const { role, userName } = payload as PayloadType;
+    console.log(role, userName);
+
+    // checking unauthority
+    //admin
+    if (userName.startsWith(ADMIN_START)) {
+      console.log("coming", userName, env.ADMIN_USERNAME);
+
+      if (userName !== env.ADMIN_USERNAME) {
+        const cookie = await cookies();
+        cookie.delete(COOKIE_NAME);
+        return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
+      } else {
+        return NextResponse.next();
+      }
+    }
+    //branch
+    if (!userName.startsWith(MADRASHA_START)) {
+      const cookie = await cookies();
+      cookie.delete(COOKIE_NAME);
+      return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
+    }
+
     if (role === "MADRASHA" && !madrashaPath) {
       return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
     }
