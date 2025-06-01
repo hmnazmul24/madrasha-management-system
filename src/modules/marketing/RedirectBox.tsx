@@ -7,7 +7,7 @@ const RedirectBox = () => {
 
   return data.get("name") ? (
     <div className="fixed z-50 p-2 text-sm top-0 left-0 w-full bg-black border-b border-b-white/50 text-white ">
-      <h3 className="text-blue-500">Our new version is alive 🐤</h3>
+      <h3 className="text-blue-500">Our new updated version is now live 🐤</h3>
       <h1 className=" text-emerald-400 text-base  mb-2">
         Welcome Back <span className="font-bold ">#{data.get("name")}</span> ,
         enter your new credentials to login.

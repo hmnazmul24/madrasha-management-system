@@ -28,6 +28,7 @@ const Total = () => {
   }
 
   const totalEarings = info.earnings.reduce((prev, curr) => prev + curr);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_2fr] gap-3 bg-transparent p-2">
       <TotalCard info={[{ title: "Teachers", amount: data.teacherCount }]} />

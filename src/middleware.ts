@@ -21,25 +21,20 @@ export async function middleware(req: NextRequest) {
   const homePath = pathname === HOME_ROUTE;
   const madrashaPath = pathname.startsWith(MADRASHA_ROUTE);
   const adminPath = pathname.startsWith(ADMIN_ROUTE);
-  console.log("coming", 1);
 
   if (!token && !homePath) {
     return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
   }
-  console.log("coming", 2);
   if (token && homePath) {
     return NextResponse.next();
   } else if (token && !homePath) {
     const secret = new TextEncoder().encode(env.JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
     const { role, userName } = payload as PayloadType;
-    console.log(role, userName);
 
     // checking unauthority
     //admin
     if (userName.startsWith(ADMIN_START)) {
-      console.log("coming", userName, env.ADMIN_USERNAME);
-
       if (userName !== env.ADMIN_USERNAME) {
         const cookie = await cookies();
         cookie.delete(COOKIE_NAME);

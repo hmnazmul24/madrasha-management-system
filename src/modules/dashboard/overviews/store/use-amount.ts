@@ -5,6 +5,7 @@ type Store = {
   setEarnings: (info: number) => void;
   allSpending: number;
   setAllSpending: (info: number) => void;
+  resetEarnings: () => void;
 };
 
 export const useAmountStore = create<Store>()((set) => ({
@@ -15,4 +16,5 @@ export const useAmountStore = create<Store>()((set) => ({
       earnings: [...data.earnings, info],
     })),
   setAllSpending: (info) => set({ allSpending: info }),
+  resetEarnings: () => set({ earnings: [0] }),
 }));

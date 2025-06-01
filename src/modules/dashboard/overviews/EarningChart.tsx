@@ -4,9 +4,10 @@ import { useQueries } from "@tanstack/react-query";
 import { CircleChart } from "./CircleChart";
 import { getAllEarnings } from "./server/analytics.action";
 import { useAmountStore } from "./store/use-amount";
+import { useEffect } from "react";
 
 export default function EarningChart() {
-  const { setEarnings } = useAmountStore();
+  const { setEarnings, resetEarnings } = useAmountStore();
   const results = useQueries({
     queries: [
       {
@@ -54,6 +55,9 @@ export default function EarningChart() {
     { data: educationData, isLoading: educationLoading },
   ] = results;
 
+  useEffect(() => {
+    resetEarnings();
+  }, [resetEarnings]);
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-2">
       {/* Donations */}
