@@ -39,6 +39,20 @@ export const createStudent = async ({
     // generate student id
     const uniqueId = await generateUniqueStudentId(madrashaId);
     //insert data
+
+    //checking limits
+    const [{ total }] = await db
+      .select({ total: count() })
+      .from(students)
+      .where(eq(students.madrashaId, madrashaId));
+
+    if (total >= 500) {
+      return {
+        error:
+          "You can't add more that 500 students : basic plan : limit : up to 500 students",
+      };
+    }
+
     await db.insert(students).values({
       name: data.name,
       madrashaId,
