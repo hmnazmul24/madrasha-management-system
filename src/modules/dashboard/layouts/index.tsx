@@ -2,17 +2,17 @@
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
-import React, { Suspense } from "react";
-import { AppSidebar } from "./AppSideBar";
-import { Toaster } from "sonner";
-import { ChildrenProps } from "@/data/types";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, LogOut } from "lucide-react";
+import { ChildrenProps } from "@/data/types";
 import { cn } from "@/lib/utils";
-import { userLogout } from "@/modules/marketing/server/user.action";
 import { useUserAuth } from "@/modules/marketing/hooks/use-user";
+import { userLogout } from "@/modules/marketing/server/user.action";
+import { ChevronRight, LogOut } from "lucide-react";
 import Link from "next/link";
-import { UnderDevelopmentMessage } from "./UnderDevelopmentMessage";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
+import { AppSidebar } from "./AppSideBar";
+import NewVersionMessage from "./NewVersionMessage";
 
 const DashboardLayout = ({ children }: ChildrenProps) => {
   const { data: auth } = useUserAuth();
@@ -21,8 +21,8 @@ const DashboardLayout = ({ children }: ChildrenProps) => {
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full bg-star-moon z-20 ">
-        {/* <NewVersionMessage /> */}
-        <UnderDevelopmentMessage />
+        <NewVersionMessage />
+        {/* <UnderDevelopmentMessage /> */}
         <div
           className={cn(
             "flex w-full z-10 items-center justify-between gap-4 px-1   bg-stone-900/50 py-3 "

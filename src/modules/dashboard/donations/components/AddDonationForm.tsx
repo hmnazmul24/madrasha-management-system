@@ -28,6 +28,7 @@ import { DonationValueType } from "../types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createDonation } from "../server/donation.action";
 import { showMessageOrError } from "@/lib/show-message-error";
+import NewAddedTag from "../../layouts/NewAddedTag";
 
 export default function AddDonationForm() {
   const qc = useQueryClient();
@@ -185,7 +186,9 @@ export default function AddDonationForm() {
           name="recievedBookName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Received Book Name (optional)</FormLabel>
+              <NewAddedTag className="-top-2 -right-[230px]">
+                <FormLabel>Received Book Name (optional)</FormLabel>
+              </NewAddedTag>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -199,7 +202,9 @@ export default function AddDonationForm() {
           name="pageNo"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Received Page No (optional)</FormLabel>
+              <NewAddedTag className="-top-2 -right-52">
+                <FormLabel>Received Page No (optional)</FormLabel>
+              </NewAddedTag>
               <FormControl>
                 <Input {...field} type="number" />
               </FormControl>

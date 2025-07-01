@@ -33,7 +33,7 @@ export type StudentListingType = {
   name: string;
   studentIdNo: string;
   result: string | null;
-  sessionRange: sessionRangeEnumType;
+  sessionLength: string;
   course: courseEnumType;
 };
 

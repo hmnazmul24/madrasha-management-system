@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/dialog";
 import { ReactNode } from "react";
 import AddFeesForm from "./AddFeesForm";
-import { sessionRangeEnumType } from "../../types";
 
 const AddFeesModal = ({
   children,
@@ -15,7 +14,7 @@ const AddFeesModal = ({
   studentId,
 }: {
   children: ReactNode;
-  session: sessionRangeEnumType;
+  session: string;
   studentId: string;
 }) => {
   return (

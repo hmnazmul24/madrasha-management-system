@@ -110,3 +110,5 @@ export const ISLAMIC_YEARS_ARR = [
 ] as const;
 
 export const RESULTS_ARR = ["A+", "A", "A-", "B", "C", "D", "F"];
+
+export const DURATION_YEARS = ["1", "2", "3", "4"] as const;

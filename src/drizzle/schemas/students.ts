@@ -2,8 +2,8 @@ import {
   COURSE_ARRAY,
   GENDER_ARRAY,
   PASS_STATUS_ARRAY,
-  SESSION_RANGES,
 } from "@/modules/dashboard/students/constants";
+import { relations } from "drizzle-orm";
 import {
   date,
   integer,
@@ -13,12 +13,10 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { createdAt, id, updatedAt } from "../schemaHelper";
-import { relations } from "drizzle-orm";
 import { madrasha } from "./admin-madrasha";
 
 // Enums
 export const courseEnum = pgEnum("course", COURSE_ARRAY);
-export const sessionRangeEnum = pgEnum("session_range", SESSION_RANGES);
 
 export const genderEnum = pgEnum("gender", GENDER_ARRAY);
 
@@ -42,9 +40,6 @@ export const students = pgTable("students", {
     .notNull()
     .default("january_2025_december_2025"),
   sessionDurationInYear: integer("session_duration_in_year").default(1),
-  sessionRange: sessionRangeEnum("session_range")
-    .notNull()
-    .default("january_2025_december_2025"),
 
   address: text("address"),
   physicalCondition: text("physical_condition").default("normal"),

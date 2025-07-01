@@ -24,13 +24,13 @@ import { ENGLISH_MONTHS, ISLAMIC_YEARS_ARR } from "../../constants";
 import { getMonthsBetweenRange } from "../../helper";
 import { studentFeesSchema } from "../../schema/fees.schema";
 import { createStudentFees } from "../../server/fees.action";
-import { sessionRangeEnumType, StudentFeesSchemaType } from "../../types";
+import { StudentFeesSchemaType } from "../../types";
 
 export default function AddFeesForm({
   session,
   studentId,
 }: {
-  session: sessionRangeEnumType;
+  session: string;
   studentId: string;
 }) {
   const qc = useQueryClient();

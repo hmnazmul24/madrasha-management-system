@@ -7,12 +7,7 @@ import { deleteFromCloude, uploadToCloude } from "@/lib/upload-image";
 import { SortingState } from "@tanstack/react-table";
 import { and, asc, count, desc, eq, ilike, SQL } from "drizzle-orm";
 import { AddStudentSchema } from "../schema/student.schema";
-import {
-  AddStudentSchemaType,
-  courseEnumType,
-  DBStudentType,
-  sessionRangeEnumType,
-} from "../types";
+import { AddStudentSchemaType, courseEnumType, DBStudentType } from "../types";
 import { RESULTS_ARR } from "../constants";
 import { auth } from "@/modules/marketing/server/user.action";
 import { generateUniqueStudentId } from "../helper/helper.action";
@@ -52,7 +47,6 @@ export const createStudent = async ({
           "You can't add more that 500 students : basic plan : limit : up to 500 students",
       };
     }
-
     await db.insert(students).values({
       name: data.name,
       madrashaId,
@@ -65,7 +59,9 @@ export const createStudent = async ({
       studentIdNO: uniqueId,
       imageUrl: imgInfo.secure_url,
       imagePublicId: imgInfo.public_id,
-      sessionRange: data.session_range!,
+      sessionLength: data.sessionLength!,
+      sessionDurationInYear: Number(data.sessionDuration),
+      physicalCondition: data.physicalCondition,
       admissionTimePaid: Number(data.admissionTimePaid),
     });
     return { message: "New Student Created " };
@@ -109,6 +105,7 @@ export const updateStudent = async ({
 
     const studentInfo: DBStudentType = {
       ...student,
+
       imageUrl: student.imageUrl || imgInfo.secure_url,
       imagePublicId: student.imageUrl
         ? student.imagePublicId
@@ -135,14 +132,16 @@ export const getStudentsForTable = async ({
   search,
   sorting,
   course,
-  sessionRange,
+  sessionLength,
+  duration,
 }: {
   limit: number;
   offset: number;
   search?: string;
   sorting?: SortingState;
   course: courseEnumType | "all";
-  sessionRange: sessionRangeEnumType | "all";
+  sessionLength: string | "all";
+  duration: string;
 }) => {
   try {
     const { id: madrashaId } = await auth();
@@ -153,9 +152,10 @@ export const getStudentsForTable = async ({
         imagePublicId: students.imagePublicId,
         name: students.name,
         studentIdNo: students.studentIdNO,
-        sessionRange: students.sessionRange,
+        sessionLength: students.sessionLength,
         course: students.course,
         result: students.result,
+        sessionDuration: students.sessionDurationInYear,
       })
       .from(students);
 
@@ -167,9 +167,12 @@ export const getStudentsForTable = async ({
     if (course !== "all") {
       conditions.push(eq(students.course, course));
     }
+    if (duration) {
+      conditions.push(eq(students.sessionDurationInYear, Number(duration)));
+    }
 
-    if (sessionRange !== "all") {
-      conditions.push(eq(students.sessionRange, sessionRange));
+    if (sessionLength !== "all") {
+      conditions.push(eq(students.sessionLength, sessionLength));
     }
 
     if (conditions.length) {

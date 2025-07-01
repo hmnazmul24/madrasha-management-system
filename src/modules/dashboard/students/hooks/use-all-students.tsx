@@ -1,8 +1,8 @@
+import { showMessageOrError } from "@/lib/show-message-error";
 import { useQuery } from "@tanstack/react-query";
 import { SortingState } from "@tanstack/react-table";
 import { getStudentsForTable } from "../server/student.action";
-import { showMessageOrError } from "@/lib/show-message-error";
-import { courseEnumType, sessionRangeEnumType } from "../types";
+import { courseEnumType } from "../types";
 
 export const useAllStudentsForTable = ({
   pageIndex,
@@ -10,14 +10,16 @@ export const useAllStudentsForTable = ({
   search,
   sorting,
   course,
-  sessionRange,
+  sessionLength,
+  duration,
 }: {
   pageIndex: number;
   pageSize: number;
   search?: string;
   sorting?: SortingState;
   course: courseEnumType | "all";
-  sessionRange: sessionRangeEnumType | "all";
+  sessionLength: string | "all";
+  duration: string;
 }) => {
   return useQuery({
     queryKey: [
@@ -27,7 +29,8 @@ export const useAllStudentsForTable = ({
       search,
       sorting,
       course,
-      sessionRange,
+      sessionLength,
+      duration,
     ],
     queryFn: async () => {
       const data = await getStudentsForTable({
@@ -36,7 +39,8 @@ export const useAllStudentsForTable = ({
         search,
         sorting,
         course,
-        sessionRange,
+        sessionLength,
+        duration,
       });
       if ("error" in data) {
         showMessageOrError(data);

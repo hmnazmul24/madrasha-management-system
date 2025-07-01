@@ -23,8 +23,11 @@ const NewVersionMessage = () => {
   if (!visible) return null;
 
   return (
-    <div className="flex h-12 items-center justify-evenly bg-blue-500">
-      <div className="text-white">Info: Application has just Updated 🚀</div>
+    <div className="flex h-12 items-center justify-evenly p-4 gap-3 bg-blue-800">
+      <div className="text-white text-xs md:text-base">
+        Info: Application has just Updated 🚀 and statistic and overview
+        updation is in process..
+      </div>
       <Badge onClick={handleAccept} className="cursor-pointer rounded-full">
         Accept
       </Badge>

@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { ProductTableSkeleton } from "@/modules/dashboard/components/ProductTableSkeleton";
+import NewAddedTag from "@/modules/dashboard/layouts/NewAddedTag";
 import {
   ColumnDef,
   flexRender,
@@ -45,19 +46,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { COURSE_ARRAY, SESSION_RANGES } from "../../constants";
+import { filteredSessionBasedOnYear } from "../../helper";
 import { useAllStudentsForTable } from "../../hooks/use-all-students";
-import {
-  courseEnumType,
-  sessionRangeEnumType,
-  StudentListingType,
-} from "../../types";
+import { courseEnumType, StudentListingType } from "../../types";
 import AddFeesModal from "../update-options/AddFeesModal";
 import DeleteStudentModal from "../update-options/DeleteModal";
+import DownloadId from "../update-options/DownloadId";
 import FessRecordsModal from "../update-options/FeesRecordsModal";
 import ProvideResultModal from "../update-options/ProvideResultModal";
 import UpdateStudentInfoModal from "../update-options/UpdateStudentInfoModal";
-import DownloadId from "../update-options/DownloadId";
 
 const columns: ColumnDef<StudentListingType>[] = [
   {
@@ -87,7 +84,7 @@ const columns: ColumnDef<StudentListingType>[] = [
     header: "Course",
   },
   {
-    accessorKey: "sessionRange",
+    accessorKey: "sessionLength",
     header: "Session",
   },
   {
@@ -103,7 +100,7 @@ const columns: ColumnDef<StudentListingType>[] = [
               studentIdInfo={{
                 name: info.row.original.name,
                 course: info.row.original.course,
-                session: info.row.original.sessionRange,
+                session: info.row.original.sessionLength,
                 id: info.row.original.studentIdNo,
                 imageUrl: info.row.original.imageUrl ?? undefined,
               }}
@@ -112,7 +109,7 @@ const columns: ColumnDef<StudentListingType>[] = [
             </DownloadId>
             <AddFeesModal
               studentId={info.row.original.id}
-              session={info.row.original.sessionRange}
+              session={info.row.original.sessionLength}
             >
               <li>Add Fees</li>
             </AddFeesModal>
@@ -151,9 +148,8 @@ const StudentListingTable = () => {
     pageIndex: 0,
     pageSize: limit,
   });
-  const [sessionRange, setSessionRange] = useState<
-    sessionRangeEnumType | "all"
-  >("all");
+  const [sessionLength, setSessionLength] = useState<string>("all");
+  const [sessionDuration, setSessionDuration] = useState<string>("1");
   const [course, setCourse] = useState<courseEnumType | "all">("all");
 
   // queries
@@ -163,7 +159,8 @@ const StudentListingTable = () => {
     search,
     sorting,
     course: course,
-    sessionRange: sessionRange,
+    sessionLength: sessionLength,
+    duration: sessionDuration,
   });
 
   // table hook
@@ -210,15 +207,40 @@ const StudentListingTable = () => {
           <SelectContent>
             <SelectItem value="all">All</SelectItem>{" "}
             {/* Option to clear filter */}
-            {COURSE_ARRAY.map((course) => (
-              <SelectItem key={course} value={course}>
+            {filteredSessionBasedOnYear(sessionDuration).map((course, i) => (
+              <SelectItem key={i} value={course}>
                 {course}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
+        {/* //.......................................... */}
+        <NewAddedTag>
+          <Select
+            onValueChange={(v) => {
+              setSessionDuration(v);
+              setSessionLength("all");
+            }}
+            value={sessionDuration}
+          >
+            <SelectTrigger className="w-36 text-sm text-slate-200">
+              <SelectValue placeholder="Select Duration" />
+            </SelectTrigger>
+            <SelectContent>
+              {/* Option to clear filter */}
+              {["1", "2", "3", "4"].map((item) => (
+                <SelectItem key={item} value={item}>
+                  {item} {sessionDuration === "1" ? "year" : "years"}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </NewAddedTag>
+        {/* //.................................... */}
         <Select
-          onValueChange={(v) => setSessionRange(v as sessionRangeEnumType)}
+          defaultValue={sessionLength}
+          value={sessionLength}
+          onValueChange={(v) => setSessionLength(v)}
         >
           <SelectTrigger className="w-48 text-sm text-slate-200">
             <SelectValue placeholder="Filter Session Ranges" />
@@ -226,7 +248,7 @@ const StudentListingTable = () => {
           <SelectContent>
             <SelectItem value="all">All</SelectItem>{" "}
             {/* Option to clear filter */}
-            {SESSION_RANGES.map((course) => (
+            {filteredSessionBasedOnYear(sessionDuration).map((course) => (
               <SelectItem
                 className="text-slate-300"
                 key={course}

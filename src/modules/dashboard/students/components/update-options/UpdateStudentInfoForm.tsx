@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
 import { CustomBtn } from "@/components/ui/custom-button";
 import { DatetimePicker } from "@/components/ui/datetime-picker";
 import {
@@ -22,20 +23,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
-import { showMessageOrError } from "@/lib/show-message-error";
-import {
-  COURSE_ARRAY,
-  GENDER_ARRAY,
-  SESSION_RANGES,
-} from "@/modules/dashboard/students/constants";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CloudUpload, Delete, Paperclip } from "lucide-react";
-import Image from "next/image";
-import { UpdateStudentSchema } from "../../schema/student.schema";
-import { updateStudent } from "../../server/student.action";
-import { DBStudentType, UpdateStudentSchemaType } from "../../types";
-import { getBase64String } from "@/lib/file-to-base64";
 import {
   Select,
   SelectContent,
@@ -43,6 +30,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { getBase64String } from "@/lib/file-to-base64";
+import { showMessageOrError } from "@/lib/show-message-error";
+import { cn } from "@/lib/utils";
+import {
+  COURSE_ARRAY,
+  DURATION_YEARS,
+  GENDER_ARRAY,
+} from "@/modules/dashboard/students/constants";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CloudUpload, Delete, Paperclip } from "lucide-react";
+import Image from "next/image";
+import { filteredSessionBasedOnYear } from "../../helper";
+import { UpdateStudentSchema } from "../../schema/student.schema";
+import { updateStudent } from "../../server/student.action";
+import { DBStudentType, UpdateStudentSchemaType } from "../../types";
 
 export default function UpdateStudentInfoForm({
   data,
@@ -69,7 +72,8 @@ export default function UpdateStudentInfoForm({
           name: data.name,
           gender: data.gender,
           course: data.course,
-          sessionRange: data.sessionRange,
+          sessionLength: data.sessionLength,
+          sessionDurationInYear: String(data.sessionDurationInYear),
           dateOfBirth: new Date(data.dataOfBirth),
           physicalCondition: data.physicalCondition
             ? data.physicalCondition
@@ -102,7 +106,11 @@ export default function UpdateStudentInfoForm({
     },
   });
   async function onSubmit(values: UpdateStudentSchemaType) {
-    const newData = { ...data, ...values };
+    const newData = {
+      ...data,
+      ...values,
+      sessionDurationInYear: Number(values.sessionDurationInYear),
+    };
     if (files?.length) {
       const base64 = await getBase64String(files[0]);
       mutate({ student: newData, base64 });
@@ -291,24 +299,52 @@ export default function UpdateStudentInfoForm({
 
         <FormField
           control={form.control}
-          name="sessionRange"
+          name="sessionDurationInYear"
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>Session Duration *</FormLabel>
+              <FormControl>
+                <div className="flex flex-row  flex-wrap gap-2">
+                  {DURATION_YEARS.map((option, i) => (
+                    <Button
+                      onClick={() => {
+                        form.setValue("sessionLength", "no_session");
+                        field.onChange(option);
+                      }}
+                      className={cn(
+                        "flex-none text-white bg-transparent hover:bg-gray-600",
+                        field.value === option && "bg-emerald-600"
+                      )}
+                      type="button"
+                      key={i}
+                    >
+                      {option} {option === "1" ? "year" : "years"}
+                    </Button>
+                  ))}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="sessionLength"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Session Range *</FormLabel>
-              <Select
-                value={field.value}
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
+              <FormLabel>Session Length *</FormLabel>
+              <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select session" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {SESSION_RANGES.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item}
+                  {filteredSessionBasedOnYear(
+                    form.watch("sessionDurationInYear")
+                  ).map((item, i) => (
+                    <SelectItem key={i} value={item}>
+                      {item.replaceAll("_", " ")}
                     </SelectItem>
                   ))}
                 </SelectContent>
