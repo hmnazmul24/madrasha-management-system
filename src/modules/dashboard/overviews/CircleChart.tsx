@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { formatLongNumber } from "./helper";
 
 const chartConfig = {
   visitors: {
@@ -90,7 +91,7 @@ export function CircleChart({
                             {isPending ? (
                               <Skeleton>skeleton</Skeleton>
                             ) : (
-                              totalAmount().toString()
+                              formatLongNumber(totalAmount())
                             )}
                           </tspan>
                           <tspan

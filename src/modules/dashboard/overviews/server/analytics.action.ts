@@ -16,11 +16,14 @@ export async function getAllEarnings() {
   const { id: madrashaId } = await auth();
   const [donationData, admissionData, studentFeeData] = await Promise.all([
     db
-      .select({ amount: donations.amount })
+      .select({ amount: donations.amount, date: donations.createdAt })
       .from(donations)
       .where(eq(donations.madrashaId, madrashaId)),
     db
-      .select({ admissionTimePaid: students.admissionTimePaid })
+      .select({
+        admissionTimePaid: students.admissionTimePaid,
+        date: students.createdAt,
+      })
       .from(students)
       .where(eq(students.madrashaId, madrashaId)),
     // todo student fees
@@ -28,6 +31,7 @@ export async function getAllEarnings() {
       .select({
         mealFees: studentFees.mealFees,
         educationFees: studentFees.educationFees,
+        date: studentFees.createdAt,
       })
       .from(studentFees)
       .innerJoin(students, eq(studentFees.studentId, students.id))
@@ -94,4 +98,42 @@ export const getTeacherAndStudentCounts = async () => {
     .where(eq(teachers.madrashaId, madrashaId));
 
   return { studentCount, teacherCount };
+};
+
+//get  earnling spending status : last 90days
+
+export const recentStatus = async () => {
+  const { id: madrashaId } = await auth();
+  const [donationData, admissionData, studentFeeData] = await Promise.all([
+    db
+      .select({ amount: donations.amount, date: donations.createdAt })
+      .from(donations)
+      .where(eq(donations.madrashaId, madrashaId)),
+    db
+      .select({
+        admissionTimePaid: students.admissionTimePaid,
+        date: students.createdAt,
+      })
+      .from(students)
+      .where(eq(students.madrashaId, madrashaId)),
+    // todo student fees
+    db
+      .select({
+        mealFees: studentFees.mealFees,
+        educationFees: studentFees.educationFees,
+        date: studentFees.createdAt,
+      })
+      .from(studentFees)
+      .innerJoin(students, eq(studentFees.studentId, students.id))
+      .where(eq(students.madrashaId, madrashaId)),
+  ]);
+
+  const allSpendings = await db
+    .select({ amount: spendings.amount, date: spendings.createdAt })
+    .from(spendings)
+    .where(eq(spendings.madrashaId, madrashaId));
+  return {
+    earnings: { donationData, admissionData, studentFeeData },
+    spending: { allSpendings },
+  };
 };

@@ -44,7 +44,7 @@ const MadrashaCard = ({
   return (
     <Card className="w-full flex-none max-w-md shadow-xl rounded-2xl border border-muted">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-xl font-bold">
+        <CardTitle className="text-xl font-bold truncate">
           {info.institutionName}
         </CardTitle>
         <Badge
