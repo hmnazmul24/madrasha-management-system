@@ -23,12 +23,18 @@ export const userLogin = async (loginInfo: LoginFormSchemaType) => {
       const cookieStore = await cookies();
       // Generate JWT token
       const token = jwt.sign(
-        { userName: loginInfo.userName, role: "ADMIN" },
+        {
+          userName: loginInfo.userName,
+          role: "ADMIN",
+          visitingMadrashaId: "",
+          visitingMadrashaName: "",
+        },
         env.JWT_SECRET,
         {
           expiresIn: "3650d", // 10 years
         }
       );
+
       // 10 years in seconds
       cookieStore.set({
         name: "auth_token",
@@ -113,7 +119,14 @@ export const auth = async () => {
     return session;
   }
   const payload = jwtDecode(token) as PayloadType;
-  return { ...payload, authenticated: true };
+
+  const madrashaId =
+    payload.role === "ADMIN" ? payload.visitingMadrashaId : payload.id;
+  const madrashaName =
+    payload.role === "ADMIN"
+      ? payload.visitingMadrashaName
+      : payload.madrashaName;
+  return { ...payload, id: madrashaId!, madrashaName, authenticated: true };
 };
 
 export const userLogout = async () => {

@@ -23,7 +23,9 @@ export default function DonationList() {
 
   return (
     <div className="max-w-2xl mx-auto md:p-4 backdrop-blur-sm text-gray-300">
-      <h2 className="text-2xl font-bold mb-4 text-white">Donation Records</h2>
+      <div>
+        <h2 className="text-2xl font-bold mb-4 text-white">Donation Records</h2>
+      </div>
 
       {isPending ? (
         <div className="w-full flex items-center justify-start">
@@ -71,7 +73,7 @@ export default function DonationList() {
                     <Button className="cursor-pointer">Edit</Button>
                   </DialogTrigger>
                   <DialogTitle></DialogTitle>
-                  <DialogContent>
+                  <DialogContent className="max-h-[90%] overflow-y-auto">
                     <EditDonationForm
                       donation={{
                         donationDetails: donation.donationDetails,

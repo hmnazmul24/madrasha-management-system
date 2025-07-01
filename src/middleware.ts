@@ -4,7 +4,6 @@ import { jwtVerify } from "jose";
 import { env } from "./data/env/server";
 import { PayloadType } from "./types";
 import {
-  ADMIN_ROUTE,
   ADMIN_START,
   COOKIE_NAME,
   HOME_ROUTE,
@@ -20,7 +19,7 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const homePath = pathname === HOME_ROUTE;
   const madrashaPath = pathname.startsWith(MADRASHA_ROUTE);
-  const adminPath = pathname.startsWith(ADMIN_ROUTE);
+  // const adminPath = pathname.startsWith(ADMIN_ROUTE);
 
   if (!token && !homePath) {
     return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
@@ -49,11 +48,13 @@ export async function middleware(req: NextRequest) {
       cookie.delete(COOKIE_NAME);
       return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
     }
-
-    if (role === "MADRASHA" && !madrashaPath) {
-      return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
+    if (role === "ADMIN") {
+      return NextResponse.next();
     }
-    if (role === "ADMIN" && !adminPath) {
+    // if (role === "ADMIN" && !adminPath) {
+    //   return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
+    // }
+    if (role === "MADRASHA" && !madrashaPath) {
       return NextResponse.redirect(new URL(HOME_ROUTE, req.url));
     }
   }

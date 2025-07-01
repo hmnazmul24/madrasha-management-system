@@ -8,6 +8,20 @@
       "when": 1748684858040,
       "tag": "0000_premium_spectrum",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1751274655082,
+      "tag": "0001_real_imperial_guard",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751331271108,
+      "tag": "0002_luxuriant_fenris",
+      "breakpoints": true
     }
   ]
 }

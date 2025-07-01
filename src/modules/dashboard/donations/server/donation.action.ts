@@ -21,6 +21,7 @@ export const createDonation = async ({
     }
     const { id: madrashaId } = await auth();
     //insert data
+
     await db.insert(donations).values({
       madrashaId,
       donationDetails: data.donationDetails,
@@ -28,9 +29,14 @@ export const createDonation = async ({
       donorName: data.donorName,
       isMoney: data.amount ? "money" : "other",
       amount: data.amount ? Number(data.amount) : 0,
+      recievedBookName: data.recievedBookName,
+      pageNo: data.pageNo ? Number(data.pageNo) : null,
     });
+
     return { message: "Donation Added " };
   } catch (error) {
+    console.log(error);
+
     return handleServerError(error);
   }
 };
@@ -69,6 +75,8 @@ export async function editDonation({
         donationType: info.donationType,
         donorName: info.donorName,
         isMoney: info.isMoney,
+        pageNo: info.pageNo ? Number(info.pageNo) : 0,
+        recievedBookName: info.recievedBookName,
       })
       .where(eq(donations.id, id));
 

@@ -12,4 +12,6 @@ export const donationSchema = z.object({
   donorName: z
     .string()
     .min(3, { message: "Donor name must be at least 3 characters" }),
+  recievedBookName: z.string().optional(),
+  pageNo: z.string().optional(),
 });

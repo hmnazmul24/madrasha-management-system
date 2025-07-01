@@ -41,6 +41,8 @@ export default function AddDonationForm() {
       amount: "",
       donationDetails: "",
       donorName: "",
+      pageNo: "",
+      recievedBookName: "",
     },
   });
 
@@ -177,6 +179,34 @@ export default function AddDonationForm() {
           )}
         />
 
+        {/*received book */}
+        <FormField
+          control={form.control}
+          name="recievedBookName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Received Book Name (optional)</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* page no */}
+        <FormField
+          control={form.control}
+          name="pageNo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Received Page No (optional)</FormLabel>
+              <FormControl>
+                <Input {...field} type="number" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         {/* Submit Button */}
         <CustomBtn pending={isPending} type="submit" variant={"signature"}>
           Submit Donation

@@ -1,0 +1,2 @@
+ALTER TABLE "students" ADD COLUMN "session_length" text DEFAULT 'january_2025_december_2025' NOT NULL;--> statement-breakpoint
+ALTER TABLE "students" ADD COLUMN "session_duration_in_year" integer DEFAULT 1;

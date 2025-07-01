@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Card,
@@ -10,10 +12,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DBMadrashaType } from "../types";
 import { Separator } from "@/components/ui/separator";
-import { Copy, Pencil } from "lucide-react";
+import { Copy, ExpandIcon, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { clientEnv } from "@/data/env/client";
 import { EditModal } from "./EditModal";
+import { useMutation } from "@tanstack/react-query";
+import { VisitMadrashaLogin } from "../server/all.action";
+import { useRouter } from "next/navigation";
 
 const copyToClipboard = (label: string, value: string) => {
   navigator.clipboard.writeText(value);
@@ -27,16 +32,33 @@ const MadrashaCard = ({
   info: DBMadrashaType;
   onEdit?: () => void;
 }) => {
+  const router = useRouter();
+  const { mutate } = useMutation({
+    mutationKey: ["visiting-login"],
+    mutationFn: VisitMadrashaLogin,
+    onSuccess: () => {
+      router.push("/dashboard/overview");
+    },
+  });
+
   return (
     <Card className="w-full flex-none max-w-md shadow-xl rounded-2xl border border-muted">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-xl font-bold">
           {info.institutionName}
         </CardTitle>
-        <Badge variant={info.disabled ? "destructive" : "default"}>
-          {info.disabled ? "Disabled" : "Active"}
+        <Badge
+          className="cursor-pointer"
+          onClick={() =>
+            mutate({ madrashaId: info.id, madrashaName: info.institutionName })
+          }
+          variant={info.disabled ? "destructive" : "default"}
+        >
+          visit <ExpandIcon />
         </Badge>
       </CardHeader>
+
+      <Separator />
 
       <Separator />
 

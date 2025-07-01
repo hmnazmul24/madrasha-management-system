@@ -47,6 +47,8 @@ export default function EditDonationForm({
       amount: donation.amount,
       donationDetails: donation.donationDetails,
       donorName: donation.donorName,
+      recievedBookName: donation.recievedBookName ?? "",
+      pageNo: donation.pageNo ?? "",
     },
   });
 
@@ -68,7 +70,7 @@ export default function EditDonationForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-7 max-w-full w-full mx-auto p-4 border rounded-md shadow-sm backdrop-blur-xs text-white"
+        className="space-y-7 max-w-full w-full  mx-auto p-4 border rounded-md shadow-sm backdrop-blur-xs text-white"
       >
         <h2 className="text-xl font-semibold">Donation Form</h2>
 
@@ -170,6 +172,34 @@ export default function EditDonationForm({
               <FormLabel>Donor Name</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="Enter donor name" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/*received book */}
+        <FormField
+          control={form.control}
+          name="recievedBookName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Received Book Name (optional)</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* page no */}
+        <FormField
+          control={form.control}
+          name="pageNo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Received Page No (optional)</FormLabel>
+              <FormControl>
+                <Input {...field} type="number" />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -3,5 +3,7 @@ export type PayloadType = {
   role: "MADRASHA" | "ADMIN";
   id: string;
   madrashaName: string;
+  visitingMadrashaId?: string;
+  visitingMadrashaName?: string;
   exp: number;
 };

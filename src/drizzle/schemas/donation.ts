@@ -23,6 +23,8 @@ export const donations = pgTable("donations", {
   amount: integer("amount"), // Nullable (only for money donations)
   donationDetails: text("donation_details").notNull(),
   donorName: varchar("donor_name", { length: 255 }).notNull(),
+  recievedBookName: text("received_book_name"),
+  pageNo: integer("page_no"),
   createdAt,
   updatedAt,
 });

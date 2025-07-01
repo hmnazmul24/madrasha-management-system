@@ -38,9 +38,14 @@ export const students = pgTable("students", {
   course: courseEnum("course").notNull().default("Moqtob"),
   dataOfBirth: date("date_of_birth", { mode: "date" }).notNull(),
   gender: genderEnum("gender").notNull(),
+  sessionLength: text("session_length")
+    .notNull()
+    .default("january_2025_december_2025"),
+  sessionDurationInYear: integer("session_duration_in_year").default(1),
   sessionRange: sessionRangeEnum("session_range")
     .notNull()
     .default("january_2025_december_2025"),
+
   address: text("address"),
   physicalCondition: text("physical_condition").default("normal"),
   admissionTimePaid: integer("admission_time_paid").default(0),
