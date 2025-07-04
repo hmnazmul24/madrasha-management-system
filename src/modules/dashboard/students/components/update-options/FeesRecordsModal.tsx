@@ -22,6 +22,7 @@ import { Trash2 } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { deleteFeesRecords, getFeesRecords } from "../../server/fees.action";
 import { showMessageOrError } from "@/lib/show-message-error";
+import NewAddedTag from "@/modules/dashboard/layouts/NewAddedTag";
 
 const FessRecordsModal = ({
   children,
@@ -56,7 +57,7 @@ const FessRecordsModal = ({
       <DialogTrigger onClick={() => mutate(studentId)}>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-4xl! overflow-x-auto">
+      <DialogContent className="max-h-[90vh] max-w-7xl! overflow-y-auto overflow-x-auto">
         <DialogHeader>
           <DialogTitle></DialogTitle>
         </DialogHeader>
@@ -83,8 +84,21 @@ const FessRecordsModal = ({
                     <TableRow>
                       <TableHead>Meal Fees</TableHead>
                       <TableHead>Education Fees</TableHead>
+
+                      <TableHead>
+                        <NewAddedTag>
+                          <span>Vehicle Fees</span>
+                        </NewAddedTag>
+                      </TableHead>
+
+                      <TableHead>
+                        {" "}
+                        <NewAddedTag>
+                          <span>Additional Fees</span>
+                        </NewAddedTag>
+                      </TableHead>
+
                       <TableHead>Month</TableHead>
-                      <TableHead>Year</TableHead>
                       <TableHead>Created At</TableHead>
                       <TableHead>Action</TableHead>
                     </TableRow>
@@ -95,8 +109,14 @@ const FessRecordsModal = ({
                         <TableRow key={record.id}>
                           <TableCell>{record.mealFees} taka</TableCell>
                           <TableCell>{record.educationFees} taka</TableCell>
+                          <TableCell>
+                            {record.vehicleFees ?? "0"} taka
+                          </TableCell>
+                          <TableCell>
+                            {record.addtionalFess ?? "0"} taka
+                          </TableCell>
                           <TableCell>{record.month}</TableCell>
-                          <TableCell>{record.year || "N/A"}</TableCell>
+
                           <TableCell>
                             <span className="text-xs text-blue-500">
                               {record.createdAt.toDateString()}

@@ -63,6 +63,10 @@ export const studentFees = pgTable("student_fees", {
   id,
   mealFees: integer("meal_fees").notNull(),
   educationFees: integer("education_fees").notNull(),
+
+  vehicleFees: integer("vehicle_fees"),
+
+  addtionalFess: integer("additional_fees"),
   month: text("month").notNull(),
   year: text("year"),
   studentId: uuid("student_id")

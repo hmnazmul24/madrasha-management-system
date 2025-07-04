@@ -23,6 +23,8 @@ export const createStudentFees = async ({
     await db.insert(studentFees).values({
       mealFees: Number(data.meal_fees),
       educationFees: Number(data.education_fee),
+      addtionalFess: data.additional_fees ? Number(data.additional_fees) : null,
+      vehicleFees: data.vehicle_fees ? Number(data.vehicle_fees) : null,
       month: data.month,
       year: data.year,
       studentId,

@@ -144,7 +144,7 @@ export const getStudentsForTable = async ({
   duration: string;
 }) => {
   try {
-    const { id: madrashaId } = await auth();
+    const { id: madrashaId, madrashaName } = await auth();
     const studentQuery = db
       .select({
         id: students.id,
@@ -205,6 +205,7 @@ export const getStudentsForTable = async ({
     return {
       allStudents,
       studentCount,
+      madrashaName: madrashaName ?? "N/A",
     };
   } catch (error) {
     return handleServerError(error);

@@ -45,11 +45,12 @@ export const useAllStudentsForTable = ({
       if ("error" in data) {
         showMessageOrError(data);
 
-        return { allStudents: [], totalCount: 0 };
+        return { allStudents: [], totalCount: 0, madrashaName: "N/A" };
       } else {
         return {
           allStudents: data.allStudents,
           totalCount: data.studentCount,
+          madrashaName: data.madrashaName,
         };
       }
     },

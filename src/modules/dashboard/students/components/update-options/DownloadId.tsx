@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import IdDesignComp from "./IdDesignComp";
+import IdCardDownloadWrapper from "./IDCardDownloadWrapper";
 
 const DownloadId = ({
   children,
@@ -28,7 +28,7 @@ const DownloadId = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle></DialogTitle>
-            <IdDesignComp stydentIdInfo={studentIdInfo} />
+            <IdCardDownloadWrapper student={studentIdInfo} />
           </DialogHeader>
         </DialogContent>
       </Dialog>

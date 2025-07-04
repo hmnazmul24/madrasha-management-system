@@ -31,6 +31,9 @@ export async function getAllEarnings() {
       .select({
         mealFees: studentFees.mealFees,
         educationFees: studentFees.educationFees,
+        vehicleFees: studentFees.vehicleFees,
+        additionalFees: studentFees.addtionalFess,
+
         date: studentFees.createdAt,
       })
       .from(studentFees)
@@ -56,12 +59,20 @@ export async function getAllEarnings() {
   const educationFees = studentFeeData.length
     ? studentFeeData.reduce((acc, item) => acc + (item.educationFees ?? 0), 0)
     : 0;
+  const vehicleFees = studentFeeData.length
+    ? studentFeeData.reduce((acc, item) => acc + (item.vehicleFees ?? 0), 0)
+    : 0;
+  const additionalFees = studentFeeData.length
+    ? studentFeeData.reduce((acc, item) => acc + (item.additionalFees ?? 0), 0)
+    : 0;
 
   return {
     totalAmountsFormDonation,
     totalAmountsAddmissionTimePayment,
     mealFees,
     educationFees,
+    vehicleFees,
+    additionalFees,
   };
 }
 

@@ -3,8 +3,8 @@
 import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
 
-const LOCAL_STORAGE_KEY = "newVersionAccepted2";
-const LOCAL_STORAGE_KEY_PREVIOUS = "newVersionAccepted";
+const LOCAL_STORAGE_KEY = "newVersionAccepted3";
+const LOCAL_STORAGE_KEY_PREVIOUS = "newVersionAccepte2";
 
 const NewVersionMessage = () => {
   const [visible, setVisible] = useState(false);
@@ -25,10 +25,11 @@ const NewVersionMessage = () => {
   if (!visible) return null;
 
   return (
-    <div className="flex h-12 items-center justify-evenly p-4 gap-3 bg-gradient-to-r from-blue-700 via-lime-800 to-purple-700">
+    <div className="flex h-12 items-center justify-evenly p-4 gap-3 bg-gradient-to-r from-black via-lime-800 to-black">
       <div className="text-white text-xs md:text-base">
-        Info: Application has just Updated 🚀 Now you can download monthly
-        status as well as print them. Further development is in progress...
+        Info: Just Updated 🚀 Some new changes has applied to
+        &quot;studentList/addFees, studentList/Download Id (realistic) and
+        studentList/feesRecord&quot;
       </div>
       <Badge onClick={handleAccept} className="cursor-pointer rounded-full">
         Accept

@@ -1,10 +1,10 @@
 "use client";
 
 import { useQueries } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { CircleChart } from "./CircleChart";
 import { getAllEarnings } from "./server/analytics.action";
 import { useAmountStore } from "./store/use-amount";
-import { useEffect } from "react";
 
 export default function EarningChart() {
   const { setEarnings, resetEarnings } = useAmountStore();
@@ -45,6 +45,22 @@ export default function EarningChart() {
           return { educationFees: data.educationFees };
         },
       },
+      {
+        queryKey: ["vehicleFees"],
+        queryFn: async () => {
+          const data = await getAllEarnings();
+          setEarnings(data.vehicleFees);
+          return { vehicleFees: data.vehicleFees };
+        },
+      },
+      {
+        queryKey: ["additionalFees"],
+        queryFn: async () => {
+          const data = await getAllEarnings();
+          setEarnings(data.additionalFees);
+          return { additionalFees: data.additionalFees };
+        },
+      },
     ],
   });
 
@@ -53,6 +69,8 @@ export default function EarningChart() {
     { data: admissionData, isLoading: admissionLoading },
     { data: mealData, isLoading: mealLoading },
     { data: educationData, isLoading: educationLoading },
+    { data: vehicleFeesData, isLoading: vehicleFeesLoading },
+    { data: additionalFeesData, isLoading: additionalFeeLoading },
   ] = results;
 
   useEffect(() => {
@@ -90,6 +108,18 @@ export default function EarningChart() {
         amount={educationData?.educationFees}
         isPending={educationLoading}
         color="aqua"
+      />
+      <CircleChart
+        title="Total Vehicle Fees"
+        amount={vehicleFeesData?.vehicleFees}
+        isPending={vehicleFeesLoading}
+        color="blue"
+      />
+      <CircleChart
+        title="Total Additional Fees"
+        amount={additionalFeesData?.additionalFees}
+        isPending={additionalFeeLoading}
+        color="white"
       />
     </div>
   );

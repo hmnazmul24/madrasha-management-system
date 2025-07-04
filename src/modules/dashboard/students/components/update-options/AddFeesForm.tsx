@@ -25,6 +25,7 @@ import { getMonthsBetweenRange } from "../../helper";
 import { studentFeesSchema } from "../../schema/fees.schema";
 import { createStudentFees } from "../../server/fees.action";
 import { StudentFeesSchemaType } from "../../types";
+import NewAddedTag from "@/modules/dashboard/layouts/NewAddedTag";
 
 export default function AddFeesForm({
   session,
@@ -40,6 +41,8 @@ export default function AddFeesForm({
       session: session,
       meal_fees: "",
       education_fee: "",
+      additional_fees: "",
+      vehicle_fees: "",
       month: "",
     },
   });
@@ -62,7 +65,7 @@ export default function AddFeesForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-full w-full relative mx-auto py-10"
+        className="space-y-8 max-w-full max-h-[80vh] overflow-y-auto w-full relative mx-auto py-10"
       >
         <h1 className="text-xl font-bold absolute -top-6 text-gray-500">
           Student Fees
@@ -91,6 +94,48 @@ export default function AddFeesForm({
               <FormControl>
                 <Input
                   placeholder="Give educational costs"
+                  type="number"
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="vehicle_fees"
+          render={({ field }) => (
+            <FormItem>
+              <NewAddedTag className="-top-3">
+                <FormLabel>Vehicle fees </FormLabel>
+              </NewAddedTag>
+              <FormControl>
+                <Input
+                  placeholder="Give vehicle fare"
+                  type="number"
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="additional_fees"
+          render={({ field }) => (
+            <FormItem>
+              <NewAddedTag className="-top-3">
+                <FormLabel>Additional fees </FormLabel>
+              </NewAddedTag>
+              <FormControl>
+                <Input
+                  placeholder="Give additional fare"
                   type="number"
                   {...field}
                 />

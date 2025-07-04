@@ -40,7 +40,6 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  Download,
   EllipsisVertical,
   SearchIcon,
 } from "lucide-react";
@@ -51,94 +50,12 @@ import { useAllStudentsForTable } from "../../hooks/use-all-students";
 import { courseEnumType, StudentListingType } from "../../types";
 import AddFeesModal from "../update-options/AddFeesModal";
 import DeleteStudentModal from "../update-options/DeleteModal";
-import DownloadId from "../update-options/DownloadId";
+
 import FessRecordsModal from "../update-options/FeesRecordsModal";
 import ProvideResultModal from "../update-options/ProvideResultModal";
 import UpdateStudentInfoModal from "../update-options/UpdateStudentInfoModal";
 
-const columns: ColumnDef<StudentListingType>[] = [
-  {
-    accessorKey: "imageUrl",
-    header: "Profile",
-    cell: ({ row }) => (
-      <Image
-        src={row.original.imageUrl ? row.original.imageUrl : "/muslim-user.png"}
-        height={50}
-        width={50}
-        className="rounded-md object-cover bg-white/20 size-[50px]"
-        alt="ProductImg"
-      />
-    ),
-  },
-
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "studentIdNo",
-    header: "Id Number",
-  },
-  {
-    accessorKey: "course",
-    header: "Course",
-  },
-  {
-    accessorKey: "sessionLength",
-    header: "Session",
-  },
-  {
-    header: "Actions",
-    cell: (info) => (
-      <Popover>
-        <PopoverTrigger className="px-4 cursor-pointer">
-          <EllipsisVertical className={"size-4"} />
-        </PopoverTrigger>
-        <PopoverContent align="end" className="w-48 p-0 ">
-          <ul className="flex items-start flex-col *:p-3 *:cursor-pointer *:text-sm *:hover:text-emerald-600">
-            <DownloadId
-              studentIdInfo={{
-                name: info.row.original.name,
-                course: info.row.original.course,
-                session: info.row.original.sessionLength,
-                id: info.row.original.studentIdNo,
-                imageUrl: info.row.original.imageUrl ?? undefined,
-              }}
-            >
-              Download Id <Download className="size-4" />
-            </DownloadId>
-            <AddFeesModal
-              studentId={info.row.original.id}
-              session={info.row.original.sessionLength}
-            >
-              <li>Add Fees</li>
-            </AddFeesModal>
-            <FessRecordsModal studentId={info.row.original.id}>
-              <li>Fees Records </li>
-            </FessRecordsModal>
-            <UpdateStudentInfoModal id={info.row.original.id}>
-              <li>Update Info</li>
-            </UpdateStudentInfoModal>
-            <ProvideResultModal
-              imageUrl={info.row.original.imageUrl}
-              userName={info.row.original.name}
-              studentId={info.row.original.id}
-            >
-              <li>Provide Result</li>
-            </ProvideResultModal>
-            <DeleteStudentModal
-              studentId={info.row.original.id}
-              imagePublicId={info.row.original.imagePublicId}
-            >
-              <li className="hover:text-red-500">Delete </li>
-            </DeleteStudentModal>
-          </ul>
-        </PopoverContent>
-      </Popover>
-    ),
-  },
-];
-
+import DownloadId from "../update-options/DownloadId";
 const StudentListingTable = () => {
   // states
   const [search, setSearch] = useState("");
@@ -162,6 +79,94 @@ const StudentListingTable = () => {
     sessionLength: sessionLength,
     duration: sessionDuration,
   });
+  // table data
+  const columns: ColumnDef<StudentListingType>[] = [
+    {
+      accessorKey: "imageUrl",
+      header: "Profile",
+      cell: ({ row }) => (
+        <Image
+          src={
+            row.original.imageUrl ? row.original.imageUrl : "/muslim-user.png"
+          }
+          height={50}
+          width={50}
+          className="rounded-md object-cover bg-white/20 size-[50px]"
+          alt="ProductImg"
+        />
+      ),
+    },
+
+    {
+      accessorKey: "name",
+      header: "Name",
+    },
+    {
+      accessorKey: "studentIdNo",
+      header: "Id Number",
+    },
+    {
+      accessorKey: "course",
+      header: "Course",
+    },
+    {
+      accessorKey: "sessionLength",
+      header: "Session",
+    },
+    {
+      header: "Actions",
+      cell: (info) => (
+        <Popover>
+          <PopoverTrigger className="px-4 cursor-pointer">
+            <EllipsisVertical className={"size-4"} />
+          </PopoverTrigger>
+          <PopoverContent align="end" className="w-48 p-0 ">
+            <ul className="flex items-start flex-col *:p-3 *:cursor-pointer *:text-sm *:hover:text-emerald-600">
+              <DownloadId
+                studentIdInfo={{
+                  name: info.row.original.name,
+                  course: info.row.original.course,
+                  session: info.row.original.sessionLength,
+                  id: info.row.original.studentIdNo,
+                  imageUrl: info.row.original.imageUrl ?? undefined,
+                  madrashaName: data?.madrashaName,
+                }}
+              >
+                <NewAddedTag className="left-24 -top-2">
+                  <span>Download Id</span>
+                </NewAddedTag>
+              </DownloadId>
+              <AddFeesModal
+                studentId={info.row.original.id}
+                session={info.row.original.sessionLength}
+              >
+                <li>Add Fees</li>
+              </AddFeesModal>
+              <FessRecordsModal studentId={info.row.original.id}>
+                <li>Fees Records </li>
+              </FessRecordsModal>
+              <UpdateStudentInfoModal id={info.row.original.id}>
+                <li>Update Info</li>
+              </UpdateStudentInfoModal>
+              <ProvideResultModal
+                imageUrl={info.row.original.imageUrl}
+                userName={info.row.original.name}
+                studentId={info.row.original.id}
+              >
+                <li>Provide Result</li>
+              </ProvideResultModal>
+              <DeleteStudentModal
+                studentId={info.row.original.id}
+                imagePublicId={info.row.original.imagePublicId}
+              >
+                <li className="hover:text-red-500">Delete </li>
+              </DeleteStudentModal>
+            </ul>
+          </PopoverContent>
+        </Popover>
+      ),
+    },
+  ];
 
   // table hook
   const table = useReactTable({

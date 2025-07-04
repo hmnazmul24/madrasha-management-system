@@ -51,4 +51,5 @@ export type StudentIdType = {
   imageUrl?: string;
   course: string;
   session: string;
+  madrashaName: string | undefined;
 };
