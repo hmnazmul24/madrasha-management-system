@@ -55,6 +55,7 @@ import FessRecordsModal from "../update-options/FeesRecordsModal";
 import ProvideResultModal from "../update-options/ProvideResultModal";
 import UpdateStudentInfoModal from "../update-options/UpdateStudentInfoModal";
 
+import { COURSE_ARRAY } from "../../constants";
 import DownloadId from "../update-options/DownloadId";
 const StudentListingTable = () => {
   // states
@@ -212,7 +213,7 @@ const StudentListingTable = () => {
           <SelectContent>
             <SelectItem value="all">All</SelectItem>{" "}
             {/* Option to clear filter */}
-            {filteredSessionBasedOnYear(sessionDuration).map((course, i) => (
+            {COURSE_ARRAY.map((course, i) => (
               <SelectItem key={i} value={course}>
                 {course}
               </SelectItem>
