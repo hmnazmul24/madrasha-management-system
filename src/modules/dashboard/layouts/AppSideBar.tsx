@@ -20,32 +20,29 @@ import {
   ScanFace,
   Send,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import adminUserImg from "../../../../public/admin-user.jpg";
+import SwitchLan from "./SwitchLan";
 
-const sidebarOptions = [
+export const sidebarOptions = [
   {
-    section: "Statistic Section",
+    section: "Statistic Section", // optional to localize
     options: [
       {
-        name: "Statistics & Overviews",
+        nameKey: "sidebar.statsOverview",
         url: "/dashboard/overview",
         icon: LayoutDashboard,
       },
-      // {
-      //   name: "All Earnings",
-      //   url: "/dashboard/earnings/all",
-      //   icon: Landmark,
-      // },
       {
-        name: "Add Spending",
+        nameKey: "sidebar.addSpending",
         url: "/dashboard/spending/create",
         icon: Send,
       },
       {
-        name: "All Spendings",
+        nameKey: "sidebar.allSpendings",
         url: "/dashboard/spending/all",
         icon: ListTodo,
       },
@@ -55,12 +52,12 @@ const sidebarOptions = [
     section: "Student Section",
     options: [
       {
-        name: "Student Lists",
+        nameKey: "sidebar.studentList",
         url: "/dashboard/student/all",
         icon: ListStart,
       },
       {
-        name: "Create Student",
+        nameKey: "sidebar.createStudent",
         url: "/dashboard/student/create",
         icon: GitPullRequestCreateIcon,
       },
@@ -70,12 +67,12 @@ const sidebarOptions = [
     section: "Teacher Section",
     options: [
       {
-        name: "Teachers Lists",
+        nameKey: "sidebar.teacherList",
         url: "/dashboard/teacher/all",
         icon: ScanFace,
       },
       {
-        name: "Create Teacher",
+        nameKey: "sidebar.createTeacher",
         url: "/dashboard/teacher/create",
         icon: Mars,
       },
@@ -85,20 +82,23 @@ const sidebarOptions = [
     section: "Donations",
     options: [
       {
-        name: "Donation History",
+        nameKey: "sidebar.donationHistory",
         url: "/dashboard/donation/all",
         icon: Gift,
       },
       {
-        name: "Add Donar",
+        nameKey: "sidebar.addDonor",
         url: "/dashboard/donation/create",
         icon: Gem,
       },
     ],
   },
 ];
+
 export function AppSidebar() {
   const pathname = usePathname();
+  const t = useTranslations();
+
   return (
     <Sidebar className="z-50">
       <SidebarContent className="bg-zinc-900 ">
@@ -122,7 +122,7 @@ export function AppSidebar() {
                           )}
                         >
                           <info.icon className="size-4" />
-                          <span>{info.name}</span>
+                          <span>{t(info.nameKey)}</span>
                         </div>
                       </Link>
                     ))}
@@ -146,6 +146,8 @@ export function AppSidebar() {
                   </h3>
                 </div>
               </div>
+
+              <SwitchLan />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

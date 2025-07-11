@@ -1,5 +1,5 @@
 import {
-  COURSE_ARRAY,
+  STUDENT_COURSE_ARRAY,
   GENDER_ARRAY,
   PASS_STATUS_ARRAY,
 } from "@/modules/dashboard/students/constants";
@@ -16,7 +16,7 @@ import { createdAt, id, updatedAt } from "../schemaHelper";
 import { madrasha } from "./admin-madrasha";
 
 // Enums
-export const courseEnum = pgEnum("course", COURSE_ARRAY);
+export const studentCourseEnum = pgEnum("student_course", STUDENT_COURSE_ARRAY);
 
 export const genderEnum = pgEnum("gender", GENDER_ARRAY);
 
@@ -33,7 +33,7 @@ export const students = pgTable("students", {
   imagePublicId: text("image_public_id"),
   fatherName: text("father_name"),
   motherName: text("mother_name"),
-  course: courseEnum("course").notNull().default("Moqtob"),
+  studentCourse: studentCourseEnum("student_course").notNull().default("Play"),
   dataOfBirth: date("date_of_birth", { mode: "date" }).notNull(),
   gender: genderEnum("gender").notNull(),
   sessionLength: text("session_length")

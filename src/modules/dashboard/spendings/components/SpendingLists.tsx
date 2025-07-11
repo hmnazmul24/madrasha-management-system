@@ -12,8 +12,11 @@ import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useDeleteSpending, useSpendings } from "../hooks/use-spending";
 import EditSpendingForm from "./EditSpendingForm";
+import { useTranslations } from "next-intl";
+import { toCamelCase } from "@/lib/to-lower-case";
 
 export default function SpendingLists() {
+  const t = useTranslations("spendingSectors");
   const [delationId, setDeletionId] = useState<string>("");
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
     useSpendings();
@@ -36,7 +39,7 @@ export default function SpendingLists() {
           {spendings.map((spending) => (
             <li key={spending.id} className="border p-4 rounded-md shadow-sm">
               <p className="font-semibold text-white">
-                {spending.spendingField}
+                {t(toCamelCase(spending.spendingField))}
               </p>
               {spending.spendingDetails && (
                 <p className="font-semibold text-slate-400 text-sm">

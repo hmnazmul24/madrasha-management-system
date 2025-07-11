@@ -1,18 +1,18 @@
 import {
-  COURSE_ARRAY,
   GENDER_ARRAY,
   PASS_STATUS_ARRAY,
+  STUDENT_COURSE_ARRAY,
 } from "@/modules/dashboard/students/constants";
 import { z } from "zod";
 
-export const courseEnum = z.enum(COURSE_ARRAY);
+export const studentCourseEnum = z.enum(STUDENT_COURSE_ARRAY);
 export const genderEnum = z.enum(GENDER_ARRAY);
 export const passStatusEnum = z.enum(PASS_STATUS_ARRAY);
 export const AddStudentSchema = z.object({
   name: z.string().min(1, { message: "Student name is required" }),
   fatherName: z.string(),
   motherName: z.string(),
-  course: courseEnum, // Validates against classEnum values
+  course: studentCourseEnum, // Validates against classEnum values
   sessionLength: z.string(), // Validates against sessionEnum values
   sessionDuration: z.string(),
   address: z.string(),
@@ -27,7 +27,7 @@ export const UpdateStudentSchema = z.object({
   name: z.string().min(1, { message: "Student name is required" }),
   fatherName: z.string(),
   motherName: z.string(),
-  course: courseEnum, // Validates against classEnum values
+  course: studentCourseEnum, // Validates against classEnum values
   sessionLength: z.string(), // Validates against sessionEnum values
   sessionDurationInYear: z.string(),
   address: z.string(),

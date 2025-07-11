@@ -4,10 +4,10 @@ import {
   UpdateStudentSchema,
 } from "../schema/student.schema";
 import {
-  COURSE_ARRAY,
   GENDER_ARRAY,
   RESULTS_ARR,
   SESSION_RANGES,
+  STUDENT_COURSE_ARRAY,
 } from "../constants";
 import { InferSelectModel } from "drizzle-orm";
 import { students } from "@/drizzle/schema";
@@ -23,7 +23,8 @@ export type UploadImageType = {
 };
 
 export type genderEnumType = (typeof GENDER_ARRAY)[number];
-export type courseEnumType = (typeof COURSE_ARRAY)[number];
+export type courseEnumType = (typeof STUDENT_COURSE_ARRAY)[number];
+export type StudentCourseEnumType = (typeof STUDENT_COURSE_ARRAY)[number];
 export type sessionRangeEnumType = (typeof SESSION_RANGES)[number];
 
 export type StudentListingType = {
@@ -34,7 +35,7 @@ export type StudentListingType = {
   studentIdNo: string;
   result: string | null;
   sessionLength: string;
-  course: courseEnumType;
+  course: StudentCourseEnumType;
 };
 
 export type StudentFeesSchemaType = z.infer<typeof studentFeesSchema>;

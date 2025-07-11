@@ -33,7 +33,7 @@ const SpendingChart = () => {
       <CircleChart
         amount={data.allAmount}
         isPending={isPending}
-        title="Total Spendings"
+        title="totalSpendings"
         color="yellow"
         className="place-self-start w-full"
       />

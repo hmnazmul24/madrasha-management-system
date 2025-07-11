@@ -18,6 +18,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { formatLongNumber } from "./helper";
+import { useTranslations } from "next-intl";
 
 const chartConfig = {
   visitors: {
@@ -38,6 +39,7 @@ export function CircleChart({
   isPending: boolean;
   className?: string;
 }) {
+  const t = useTranslations("term");
   const chartData = [
     { browser: "Total", visitors: amount, fill: color ?? "red" },
   ];
@@ -112,7 +114,7 @@ export function CircleChart({
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <h1>{title}</h1>
+        <h1>{t(title)}</h1>
       </CardFooter>
     </Card>
   );

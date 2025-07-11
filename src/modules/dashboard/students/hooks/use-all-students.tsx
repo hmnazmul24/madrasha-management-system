@@ -2,7 +2,7 @@ import { showMessageOrError } from "@/lib/show-message-error";
 import { useQuery } from "@tanstack/react-query";
 import { SortingState } from "@tanstack/react-table";
 import { getStudentsForTable } from "../server/student.action";
-import { courseEnumType } from "../types";
+import { StudentCourseEnumType } from "../types";
 
 export const useAllStudentsForTable = ({
   pageIndex,
@@ -17,7 +17,7 @@ export const useAllStudentsForTable = ({
   pageSize: number;
   search?: string;
   sorting?: SortingState;
-  course: courseEnumType | "all";
+  course: StudentCourseEnumType | "all";
   sessionLength: string | "all";
   duration: string;
 }) => {

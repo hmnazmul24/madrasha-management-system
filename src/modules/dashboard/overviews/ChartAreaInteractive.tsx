@@ -37,6 +37,7 @@ import {
   generate90DaySummary,
 } from "./helper";
 import { generateSummaryPDF } from "./helper/pdf-and-print";
+import { useTranslations } from "next-intl";
 
 export const description = "An interactive area chart";
 
@@ -53,6 +54,7 @@ const chartConfig = {
 
 type TimeRangeType = "7d" | "30d" | "90d";
 export function ChartAreaInteractive() {
+  const t = useTranslations("term");
   const [timeRange, setTimeRange] = React.useState<TimeRangeType>("90d");
 
   const { data, isPending, error } = useQuery({
@@ -99,11 +101,11 @@ export function ChartAreaInteractive() {
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>
-            Earning -{" "}
+            {t("earnings")} -{" "}
             <span className="text-2xl font-black text-blue-500">
               {formatLongNumber(calculateTotals(filteredData).totalEarnings)}{" "}
             </span>{" "}
-            : Spendings -{" "}
+            : {t("spendings")} -{" "}
             <span className="text-2xl text-red-400 font-black">
               {formatLongNumber(calculateTotals(filteredData).totalSpendings)}
             </span>
@@ -116,12 +118,12 @@ export function ChartAreaInteractive() {
             <Button
               onClick={() => generateSummaryPDF(data, timeRange, "print")}
             >
-              Print <Printer />
+              {t("print")} <Printer />
             </Button>
             <Button
               onClick={() => generateSummaryPDF(data, timeRange, "download")}
             >
-              PDF Download <Download />
+              {t("pdfDownload")} <Download />
             </Button>
           </div>
         </div>

@@ -4,22 +4,30 @@ export const GENDER_ARRAY = ["male", "female", "other"] as const;
 
 export const PASS_STATUS_ARRAY = ["pass", "fail", "null"] as const;
 
-// // Constants for the enums
-export const COURSE_ARRAY = [
-  "taishir",
+export const STUDENT_COURSE_ARRAY = [
+  "Play",
+  "Nursery",
+  "First Grade",
+  "Second Grade",
+  "Third Grade",
+  "Fourth Grade",
+  "Fifth Grade",
+  "Moqtob",
+  "Qirat",
+  "Hifz",
+  "Yaj Dahom",
+  "Dahom",
   "Mizan",
   "Nahbemir",
   "Hedayetun nahu",
   "Kafiya",
   "Shorhe jami",
   "Shorhe bekaya",
-  "Jalalain ",
+  "Jalalain",
   "Meshkat",
   "Dawra",
-  "Moqtob",
-  "Qirat",
+  "Taishir",
   "Kitab",
-  "Hifz",
   "Tajweed",
   "Sarf",
   "Nahw",
@@ -41,17 +49,6 @@ export const COURSE_ARRAY = [
   "Sadharon Gyan (General Knowledge)",
 ] as const;
 
-// export const SESSION_RANGES = [
-//   "no_session",
-//   "ramadan_1444_ramadan_1445",
-//   "ramadan_1445_ramadan_1446",
-//   "ramadan_1446_ramadan_1447",
-//   "ramadan_1447_ramadan_1448",
-//   "ramadan_1448_ramadan_1449",
-//   "ramadan_1449_ramadan_1450",
-//   "ramadan_1450_ramadan_1451",
-//   "ramadan_1451_ramadan_1452",
-// ] as const;
 export const SESSION_RANGES = [
   "no_session",
   "january_2023_december_2023",

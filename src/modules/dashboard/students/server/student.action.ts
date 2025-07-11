@@ -4,13 +4,17 @@ import { db } from "@/drizzle/db";
 import { students } from "@/drizzle/schemas/students";
 import { handleServerError } from "@/lib/handle-server-error";
 import { deleteFromCloude, uploadToCloude } from "@/lib/upload-image";
+import { auth } from "@/modules/marketing/server/user.action";
 import { SortingState } from "@tanstack/react-table";
 import { and, asc, count, desc, eq, ilike, SQL } from "drizzle-orm";
-import { AddStudentSchema } from "../schema/student.schema";
-import { AddStudentSchemaType, courseEnumType, DBStudentType } from "../types";
 import { RESULTS_ARR } from "../constants";
-import { auth } from "@/modules/marketing/server/user.action";
 import { generateUniqueStudentId } from "../helper/helper.action";
+import { AddStudentSchema } from "../schema/student.schema";
+import {
+  AddStudentSchemaType,
+  DBStudentType,
+  StudentCourseEnumType,
+} from "../types";
 
 export const createStudent = async ({
   student,
@@ -53,7 +57,7 @@ export const createStudent = async ({
       fatherName: data.fatherName,
       motherName: data.motherName,
       address: data.address!,
-      course: data.course!,
+      studentCourse: data.course!,
       dataOfBirth: data.dateOfBirth,
       gender: data.gender!,
       studentIdNO: uniqueId,
@@ -139,7 +143,7 @@ export const getStudentsForTable = async ({
   offset: number;
   search?: string;
   sorting?: SortingState;
-  course: courseEnumType | "all";
+  course: StudentCourseEnumType | "all";
   sessionLength: string | "all";
   duration: string;
 }) => {
@@ -153,7 +157,7 @@ export const getStudentsForTable = async ({
         name: students.name,
         studentIdNo: students.studentIdNO,
         sessionLength: students.sessionLength,
-        course: students.course,
+        course: students.studentCourse,
         result: students.result,
         sessionDuration: students.sessionDurationInYear,
       })
@@ -165,7 +169,7 @@ export const getStudentsForTable = async ({
     }
 
     if (course !== "all") {
-      conditions.push(eq(students.course, course));
+      conditions.push(eq(students.studentCourse, course));
     }
     if (duration) {
       conditions.push(eq(students.sessionDurationInYear, Number(duration)));

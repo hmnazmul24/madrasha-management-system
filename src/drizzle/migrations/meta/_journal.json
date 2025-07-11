@@ -43,6 +43,27 @@
       "when": 1751626574471,
       "tag": "0005_mute_odin",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1752150385599,
+      "tag": "0006_silly_lifeguard",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1752222876712,
+      "tag": "0007_mushy_cerise",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1752228542166,
+      "tag": "0008_giant_leopardon",
+      "breakpoints": true
     }
   ]
 }

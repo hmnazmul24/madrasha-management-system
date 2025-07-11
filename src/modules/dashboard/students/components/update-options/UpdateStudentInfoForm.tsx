@@ -35,9 +35,9 @@ import { getBase64String } from "@/lib/file-to-base64";
 import { showMessageOrError } from "@/lib/show-message-error";
 import { cn } from "@/lib/utils";
 import {
-  COURSE_ARRAY,
   DURATION_YEARS,
   GENDER_ARRAY,
+  STUDENT_COURSE_ARRAY,
 } from "@/modules/dashboard/students/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CloudUpload, Delete, Paperclip } from "lucide-react";
@@ -46,6 +46,7 @@ import { filteredSessionBasedOnYear } from "../../helper";
 import { UpdateStudentSchema } from "../../schema/student.schema";
 import { updateStudent } from "../../server/student.action";
 import { DBStudentType, UpdateStudentSchemaType } from "../../types";
+import { useTranslations } from "next-intl";
 
 export default function UpdateStudentInfoForm({
   data,
@@ -53,6 +54,7 @@ export default function UpdateStudentInfoForm({
   data: DBStudentType;
 }) {
   const qc = useQueryClient();
+  const t = useTranslations("studentCourses");
   const [files, setFiles] = useState<File[] | null>(null);
   // checking the data
 
@@ -71,7 +73,7 @@ export default function UpdateStudentInfoForm({
           imagePublicId: data.imagePublicId || undefined,
           name: data.name,
           gender: data.gender,
-          course: data.course,
+          course: data.studentCourse,
           sessionLength: data.sessionLength,
           sessionDurationInYear: String(data.sessionDurationInYear),
           dateOfBirth: new Date(data.dataOfBirth),
@@ -284,9 +286,9 @@ export default function UpdateStudentInfoForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {COURSE_ARRAY.map((item) => (
+                  {STUDENT_COURSE_ARRAY.map((item) => (
                     <SelectItem key={item} value={item}>
-                      {item}
+                      {t(item)}
                     </SelectItem>
                   ))}
                 </SelectContent>

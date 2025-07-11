@@ -26,6 +26,8 @@ import { ALL_MONTHS, SPENDING_FIELDS, YEARS_ARR } from "../constants";
 import { spendingSchema } from "../schema/spending.schema";
 import { editSpendings } from "../server/spending.action";
 import { SpendingSchemaType } from "../types/type";
+import { useTranslations } from "next-intl";
+import { toCamelCase } from "@/lib/to-lower-case";
 
 export default function EditSpendingForm({
   spending,
@@ -35,6 +37,7 @@ export default function EditSpendingForm({
   id: string;
 }) {
   const qc = useQueryClient();
+  const t = useTranslations("spendingSectors");
 
   const form = useForm<SpendingSchemaType>({
     resolver: zodResolver(spendingSchema),
@@ -85,7 +88,7 @@ export default function EditSpendingForm({
                 <SelectContent>
                   {SPENDING_FIELDS.map((type) => (
                     <SelectItem key={type} value={type}>
-                      {type}
+                      {t(toCamelCase(type))}
                     </SelectItem>
                   ))}
                 </SelectContent>

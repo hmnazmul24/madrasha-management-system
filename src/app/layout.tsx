@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { getLocale } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 const QuickSand = Quicksand({
   variable: "--font-sand",
@@ -15,16 +17,18 @@ export const metadata: Metadata = {
   description: "A Islamic Educational Institute At Damurhuda",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={` ${QuickSand.variable} font-sand antialiased dark`}>
         <ReactQueryProvider>
-          {children}
+          <NextIntlClientProvider>{children}</NextIntlClientProvider>
           <CursorClickEffect />
           <Toaster />
         </ReactQueryProvider>

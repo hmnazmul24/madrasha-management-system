@@ -80,7 +80,7 @@ export default function EarningChart() {
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-2">
       {/* Donations */}
       <CircleChart
-        title="Total Donations"
+        title="totalDonations"
         amount={donationData?.totalAmountsFormDonation}
         isPending={donationLoading}
         color="violet"
@@ -88,7 +88,7 @@ export default function EarningChart() {
 
       {/* Admission Payments */}
       <CircleChart
-        title="Total Admission Payments"
+        title="totalAdmissionPayments"
         amount={admissionData?.totalAmountsAddmissionTimePayment}
         isPending={admissionLoading}
         color="green"
@@ -96,7 +96,7 @@ export default function EarningChart() {
 
       {/* Meal Fees */}
       <CircleChart
-        title="Total Meal Fees"
+        title="totalMealFees"
         amount={mealData?.mealFees}
         isPending={mealLoading}
         color="tomato"
@@ -104,19 +104,19 @@ export default function EarningChart() {
 
       {/* education */}
       <CircleChart
-        title="Total Education Fees"
+        title="totalEducationFees"
         amount={educationData?.educationFees}
         isPending={educationLoading}
         color="aqua"
       />
       <CircleChart
-        title="Total Vehicle Fees"
+        title="totalVehicleFees"
         amount={vehicleFeesData?.vehicleFees}
         isPending={vehicleFeesLoading}
         color="blue"
       />
       <CircleChart
-        title="Total Additional Fees"
+        title="totalAdditionalFees"
         amount={additionalFeesData?.additionalFees}
         isPending={additionalFeeLoading}
         color="white"

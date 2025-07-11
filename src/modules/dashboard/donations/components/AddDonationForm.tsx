@@ -29,9 +29,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createDonation } from "../server/donation.action";
 import { showMessageOrError } from "@/lib/show-message-error";
 import NewAddedTag from "../../layouts/NewAddedTag";
+import { useTranslations } from "next-intl";
 
 export default function AddDonationForm() {
   const qc = useQueryClient();
+  const t = useTranslations("donationSectors");
   const [isMoney, setIsMoney] = useState<"money" | "other">("money");
 
   const form = useForm<DonationValueType>({
@@ -88,7 +90,7 @@ export default function AddDonationForm() {
                 <SelectContent>
                   {DONATION_ARR.map((type) => (
                     <SelectItem key={type} value={type}>
-                      {type}
+                      {t(type)}
                     </SelectItem>
                   ))}
                 </SelectContent>

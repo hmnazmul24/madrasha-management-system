@@ -28,6 +28,7 @@ import { DONATION_ARR } from "../constants";
 import { donationSchema } from "../schema/donation.schema";
 import { editDonation } from "../server/donation.action";
 import { DonationValueType } from "../types";
+import { useTranslations } from "next-intl";
 
 export default function EditDonationForm({
   donation,
@@ -37,6 +38,8 @@ export default function EditDonationForm({
   id: string;
 }) {
   const qc = useQueryClient();
+
+  const t = useTranslations("donationSectors");
   const [isMoney] = useState<"money" | "other">(donation.isMoney);
 
   const form = useForm<DonationValueType>({
@@ -90,7 +93,7 @@ export default function EditDonationForm({
                 <SelectContent>
                   {DONATION_ARR.map((type) => (
                     <SelectItem key={type} value={type}>
-                      {type}
+                      {t(type)}
                     </SelectItem>
                   ))}
                 </SelectContent>

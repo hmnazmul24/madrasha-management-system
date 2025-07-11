@@ -1,10 +1,9 @@
 "use client";
-import React from "react";
-import TotalCard from "./TotalCard";
 import { useQuery } from "@tanstack/react-query";
-import { getTeacherAndStudentCounts } from "./server/analytics.action";
 import Loading from "../components/Loading";
+import { getTeacherAndStudentCounts } from "./server/analytics.action";
 import { useAmountStore } from "./store/use-amount";
+import TotalCard from "./TotalCard";
 
 const Total = () => {
   const info = useAmountStore();
@@ -31,14 +30,14 @@ const Total = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_2fr] gap-3 bg-transparent p-2">
-      <TotalCard info={[{ title: "Teachers", amount: data.teacherCount }]} />
-      <TotalCard info={[{ title: "Students", amount: data.studentCount }]} />
+      <TotalCard info={[{ title: "teachers", amount: data.teacherCount }]} />
+      <TotalCard info={[{ title: "students", amount: data.studentCount }]} />
       <TotalCard
         info={[
-          { title: "Total Earnings (Taka)", amount: totalEarings },
-          { title: "Total Spending (taka)", amount: info.allSpending },
+          { title: "totalEarningsTaka", amount: totalEarings },
+          { title: "totalSpendingTaka", amount: info.allSpending },
           {
-            title: "Total Revenue (taka)",
+            title: "totalRevenueTaka",
             amount: totalEarings - info.allSpending,
           },
         ]}

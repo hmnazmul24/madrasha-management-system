@@ -12,8 +12,10 @@ import { useDeleteDonation, useDonations } from "../hooks/use-donations";
 
 import { useState } from "react";
 import EditDonationForm from "./EditDonationForm";
+import { useTranslations } from "next-intl";
 
 export default function DonationList() {
+  const t = useTranslations("donationSectors");
   const [delationId, setDeletionId] = useState<string>("");
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
     useDonations();
@@ -38,7 +40,7 @@ export default function DonationList() {
           {donations.map((donation) => (
             <li key={donation.id} className="border p-4 rounded-md shadow-sm">
               <p className="font-semibold text-white">
-                {donation.donationType}
+                {t(donation.donationType)}
               </p>
               <p>
                 <span className="font-medium">Donor:</span> {donation.donorName}

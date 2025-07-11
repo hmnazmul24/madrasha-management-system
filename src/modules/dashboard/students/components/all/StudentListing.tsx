@@ -47,7 +47,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { filteredSessionBasedOnYear } from "../../helper";
 import { useAllStudentsForTable } from "../../hooks/use-all-students";
-import { courseEnumType, StudentListingType } from "../../types";
+import { StudentCourseEnumType, StudentListingType } from "../../types";
 import AddFeesModal from "../update-options/AddFeesModal";
 import DeleteStudentModal from "../update-options/DeleteModal";
 
@@ -55,8 +55,9 @@ import FessRecordsModal from "../update-options/FeesRecordsModal";
 import ProvideResultModal from "../update-options/ProvideResultModal";
 import UpdateStudentInfoModal from "../update-options/UpdateStudentInfoModal";
 
-import { COURSE_ARRAY } from "../../constants";
 import DownloadId from "../update-options/DownloadId";
+import { STUDENT_COURSE_ARRAY } from "../../constants";
+import { useTranslations } from "next-intl";
 const StudentListingTable = () => {
   // states
   const [search, setSearch] = useState("");
@@ -68,8 +69,9 @@ const StudentListingTable = () => {
   });
   const [sessionLength, setSessionLength] = useState<string>("all");
   const [sessionDuration, setSessionDuration] = useState<string>("1");
-  const [course, setCourse] = useState<courseEnumType | "all">("all");
-
+  const [course, setCourse] = useState<StudentCourseEnumType | "all">("all");
+  // translations
+  const t = useTranslations("studentCourses");
   // queries
   const { data, isLoading } = useAllStudentsForTable({
     pageIndex: pagination.pageIndex,
@@ -107,8 +109,8 @@ const StudentListingTable = () => {
       header: "Id Number",
     },
     {
-      accessorKey: "course",
       header: "Course",
+      cell: (info) => t(info.row.original.course),
     },
     {
       accessorKey: "sessionLength",
@@ -206,16 +208,16 @@ const StudentListingTable = () => {
 
       <div className=" border  p-3 rounded-md mb-4 flex items-center justify-start gap-2 overflow-y-auto">
         <h1 className="font-semibold text-emerald-500">Filters : </h1>
-        <Select onValueChange={(v) => setCourse(v as courseEnumType)}>
+        <Select onValueChange={(v) => setCourse(v as StudentCourseEnumType)}>
           <SelectTrigger className="w-36 text-sm text-slate-200">
             <SelectValue placeholder="Filter Course" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All</SelectItem>{" "}
             {/* Option to clear filter */}
-            {COURSE_ARRAY.map((course, i) => (
+            {STUDENT_COURSE_ARRAY.map((course, i) => (
               <SelectItem key={i} value={course}>
-                {course}
+                {t(course)}
               </SelectItem>
             ))}
           </SelectContent>
