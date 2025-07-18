@@ -46,6 +46,10 @@ export default function AllSalaryListing() {
               </p>
 
               <p>
+                <span className="font-medium">Month:</span>{" "}
+                {salary.month ? salary.month : "N/A"}
+              </p>
+              <p>
                 <span className="font-medium">Bonus:</span>{" "}
                 {salary.bonus ? salary.bonus : "N/A"}
               </p>
@@ -57,14 +61,14 @@ export default function AllSalaryListing() {
                 <span className="font-medium text-gray-300">Salary Notes:</span>{" "}
                 {salary.notes}
               </p>
-              <p className="text-sm text-blue-500">
+              <p className="text-sm text-blue-400">
                 <span className="font-medium">Created At:</span>{" "}
                 {salary.createdAt.toDateString()}
               </p>
               {salary.updatedAt.toDateString() !==
                 salary.createdAt.toDateString() && (
                 <p className="text-sm text-yellow-500">
-                  <span className="font-medium">Created At:</span>{" "}
+                  <span className="font-medium">Updated At:</span>{" "}
                   {salary.updatedAt.toDateString()}
                 </p>
               )}
@@ -82,7 +86,9 @@ export default function AllSalaryListing() {
                         bonus: salary.bonus
                           ? salary.bonus.toString()
                           : undefined,
+                        month: salary.month ?? undefined,
                         notes: salary.notes ? salary.notes : undefined,
+                        year: salary.year ?? undefined,
                       }}
                       recordId={salary.id}
                     />

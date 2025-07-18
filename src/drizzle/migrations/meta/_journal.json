@@ -64,6 +64,20 @@
       "when": 1752228542166,
       "tag": "0008_giant_leopardon",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1752826984679,
+      "tag": "0009_unknown_black_bird",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1752829954104,
+      "tag": "0010_tiresome_red_wolf",
+      "breakpoints": true
     }
   ]
 }

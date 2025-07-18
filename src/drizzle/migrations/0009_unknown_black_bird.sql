@@ -1,0 +1,1 @@
+ALTER TABLE "salary_payments" ADD COLUMN "month" text;

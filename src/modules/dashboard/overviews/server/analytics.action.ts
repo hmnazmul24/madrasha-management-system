@@ -8,9 +8,10 @@ import {
   students,
   teachers,
 } from "@/drizzle/schema";
+import { auth } from "@/modules/marketing/server/user.action";
 import { count, eq } from "drizzle-orm";
 import { SPENDING_FIELDS } from "../../spendings/constants";
-import { auth } from "@/modules/marketing/server/user.action";
+import { totalTeacherSalaryHelper } from "./helpers.action";
 
 export async function getAllEarnings() {
   const { id: madrashaId } = await auth();
@@ -65,7 +66,6 @@ export async function getAllEarnings() {
   const additionalFees = studentFeeData.length
     ? studentFeeData.reduce((acc, item) => acc + (item.additionalFees ?? 0), 0)
     : 0;
-
   return {
     totalAmountsFormDonation,
     totalAmountsAddmissionTimePayment,
@@ -83,7 +83,7 @@ export const getAllSpendings = async () => {
     .from(spendings)
     .where(eq(spendings.madrashaId, madrashaId));
 
-  const allAmount = allSpendings.reduce((prev, current) => {
+  let allAmount = allSpendings.reduce((prev, current) => {
     return prev + current.amount;
   }, 0);
 
@@ -94,8 +94,14 @@ export const getAllSpendings = async () => {
       amount: match?.amount ?? 0,
     };
   });
-
-  return { allAmount, allAmountAndFields };
+  // teacher salary;
+  const totalTeacherSalary = await totalTeacherSalaryHelper(madrashaId);
+  allAmount = Number(allAmount) + Number(totalTeacherSalary);
+  return {
+    allAmount,
+    allAmountAndFields,
+    totalTeacherSalary,
+  };
 };
 export const getTeacherAndStudentCounts = async () => {
   const { id: madrashaId } = await auth();
@@ -115,36 +121,42 @@ export const getTeacherAndStudentCounts = async () => {
 
 export const recentStatus = async () => {
   const { id: madrashaId } = await auth();
-  const [donationData, admissionData, studentFeeData] = await Promise.all([
-    db
-      .select({ amount: donations.amount, date: donations.createdAt })
-      .from(donations)
-      .where(eq(donations.madrashaId, madrashaId)),
-    db
-      .select({
-        admissionTimePaid: students.admissionTimePaid,
-        date: students.createdAt,
-      })
-      .from(students)
-      .where(eq(students.madrashaId, madrashaId)),
-    // todo student fees
-    db
-      .select({
-        mealFees: studentFees.mealFees,
-        educationFees: studentFees.educationFees,
-        date: studentFees.createdAt,
-      })
-      .from(studentFees)
-      .innerJoin(students, eq(studentFees.studentId, students.id))
-      .where(eq(students.madrashaId, madrashaId)),
-  ]);
+  const [donationData, admissionData, studentFeeData, totalTeacherSalarySpent] =
+    await Promise.all([
+      db
+        .select({ amount: donations.amount, date: donations.createdAt })
+        .from(donations)
+        .where(eq(donations.madrashaId, madrashaId)),
+      db
+        .select({
+          admissionTimePaid: students.admissionTimePaid,
+          date: students.createdAt,
+        })
+        .from(students)
+        .where(eq(students.madrashaId, madrashaId)),
+      // todo student fees
+      db
+        .select({
+          mealFees: studentFees.mealFees,
+          educationFees: studentFees.educationFees,
+          date: studentFees.createdAt,
+        })
+        .from(studentFees)
+        .innerJoin(students, eq(studentFees.studentId, students.id))
+        .where(eq(students.madrashaId, madrashaId)),
+      totalTeacherSalaryHelper(madrashaId),
+    ]);
 
   const allSpendings = await db
     .select({ amount: spendings.amount, date: spendings.createdAt })
     .from(spendings)
     .where(eq(spendings.madrashaId, madrashaId));
+
   return {
     earnings: { donationData, admissionData, studentFeeData },
-    spending: { allSpendings },
+    spending: {
+      allSpendings,
+    },
+    totalTeacherSalarySpent,
   };
 };

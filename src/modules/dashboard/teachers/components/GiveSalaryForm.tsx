@@ -27,11 +27,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SALARY_PAYMENTS_BD } from "../constants";
+import { SALARY_PAYMENTS_BD, SALARY_YEARS } from "../constants";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTeacherSalary } from "../server/teacher.action";
 import { showMessageOrError } from "@/lib/show-message-error";
+import { ENGLISH_MONTHS } from "../../students/constants";
 
 export default function GiveSalaryForm({
   name,
@@ -43,7 +44,14 @@ export default function GiveSalaryForm({
   const qc = useQueryClient();
   const form = useForm({
     resolver: zodResolver(salaryTeacherSchema),
-    defaultValues: { amount: "", bonus: "", method: "Hand to Hand", notes: "" },
+    defaultValues: {
+      amount: "",
+      bonus: "",
+      method: "Hand to Hand",
+      notes: "",
+      month: "",
+      year: "",
+    },
   });
 
   // mutations
@@ -93,9 +101,67 @@ export default function GiveSalaryForm({
                 name="bonus"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Bonus</FormLabel>
+                    <FormLabel>Bonus (optional)</FormLabel>
                     <FormControl>
                       <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="month"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Salary Month (optional)</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Month" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {ENGLISH_MONTHS.map((item) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="year"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Salary Year (optional)</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Year" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {SALARY_YEARS.map((item) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -136,7 +202,7 @@ export default function GiveSalaryForm({
                 name="notes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Notes</FormLabel>
+                    <FormLabel>Notes (optional)</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Give some information about this payment."

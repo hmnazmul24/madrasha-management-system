@@ -181,6 +181,8 @@ export const createTeacherSalary = async ({
       amountPaid: Number(data.amount),
       paymentMethod: data.method,
       bonus: Number(data.bonus),
+      month: data.month,
+      year: data.year,
       teacherId,
       notes: data.notes ? data.notes : "",
     });
@@ -209,7 +211,9 @@ export const updateTeacherSalary = async ({
       .set({
         amountPaid: Number(data.amount),
         paymentMethod: data.method,
-        bonus: Number(data.bonus),
+        bonus: data.bonus ? Number(data.bonus) : null,
+        month: data.month,
+        year: data.year,
         notes: data.notes ? data.notes : "",
       })
       .where(eq(salaryPayments.id, recordId));

@@ -5,7 +5,6 @@ import { students } from "@/drizzle/schemas/students";
 import { handleServerError } from "@/lib/handle-server-error";
 import { deleteFromCloude, uploadToCloude } from "@/lib/upload-image";
 import { auth } from "@/modules/marketing/server/user.action";
-import { SortingState } from "@tanstack/react-table";
 import { and, asc, count, desc, eq, ilike, SQL } from "drizzle-orm";
 import { RESULTS_ARR } from "../constants";
 import { generateUniqueStudentId } from "../helper/helper.action";
@@ -13,7 +12,7 @@ import { AddStudentSchema } from "../schema/student.schema";
 import {
   AddStudentSchemaType,
   DBStudentType,
-  StudentCourseEnumType,
+  StudentTableFilterPropsType,
 } from "../types";
 
 export const createStudent = async ({
@@ -136,17 +135,10 @@ export const getStudentsForTable = async ({
   search,
   sorting,
   course,
-  sessionLength,
-  duration,
-}: {
-  limit: number;
-  offset: number;
-  search?: string;
-  sorting?: SortingState;
-  course: StudentCourseEnumType | "all";
-  sessionLength: string | "all";
-  duration: string;
-}) => {
+  gender,
+  sessionRange,
+  yearRange,
+}: StudentTableFilterPropsType) => {
   try {
     const { id: madrashaId, madrashaName } = await auth();
     const studentQuery = db
@@ -160,6 +152,7 @@ export const getStudentsForTable = async ({
         course: students.studentCourse,
         result: students.result,
         sessionDuration: students.sessionDurationInYear,
+        gender: students.gender,
       })
       .from(students);
 
@@ -168,15 +161,38 @@ export const getStudentsForTable = async ({
       conditions.push(ilike(students.name, `%${search}%`));
     }
 
-    if (course !== "all") {
+    if (
+      course !== "All Courses" &&
+      course !== "All Genders" &&
+      course !== "All Sessions" &&
+      course !== "All Years"
+    ) {
       conditions.push(eq(students.studentCourse, course));
     }
-    if (duration) {
-      conditions.push(eq(students.sessionDurationInYear, Number(duration)));
+    if (
+      yearRange !== "All Courses" &&
+      yearRange !== "All Genders" &&
+      yearRange !== "All Sessions" &&
+      yearRange !== "All Years"
+    ) {
+      conditions.push(eq(students.sessionDurationInYear, Number(yearRange)));
     }
 
-    if (sessionLength !== "all") {
-      conditions.push(eq(students.sessionLength, sessionLength));
+    if (
+      sessionRange !== "All Courses" &&
+      sessionRange !== "All Genders" &&
+      sessionRange !== "All Sessions" &&
+      sessionRange !== "All Years"
+    ) {
+      conditions.push(eq(students.sessionLength, sessionRange));
+    }
+    if (
+      gender !== "All Courses" &&
+      gender !== "All Genders" &&
+      gender !== "All Sessions" &&
+      gender !== "All Years"
+    ) {
+      conditions.push(eq(students.gender, gender));
     }
 
     if (conditions.length) {

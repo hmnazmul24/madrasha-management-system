@@ -41,13 +41,19 @@ import {
   ChevronsLeft,
   ChevronsRight,
   EllipsisVertical,
+  Filter,
   SearchIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { filteredSessionBasedOnYear } from "../../helper";
 import { useAllStudentsForTable } from "../../hooks/use-all-students";
-import { StudentCourseEnumType, StudentListingType } from "../../types";
+import {
+  AllFilterType,
+  genderEnumType,
+  StudentCourseEnumType,
+  StudentListingType,
+} from "../../types";
 import AddFeesModal from "../update-options/AddFeesModal";
 import DeleteStudentModal from "../update-options/DeleteModal";
 
@@ -55,9 +61,14 @@ import FessRecordsModal from "../update-options/FeesRecordsModal";
 import ProvideResultModal from "../update-options/ProvideResultModal";
 import UpdateStudentInfoModal from "../update-options/UpdateStudentInfoModal";
 
-import DownloadId from "../update-options/DownloadId";
-import { STUDENT_COURSE_ARRAY } from "../../constants";
 import { useTranslations } from "next-intl";
+import {
+  COURSE_FILTER_YEARS,
+  GENDER_ARRAY,
+  STUDENT_COURSE_ARRAY,
+} from "../../constants";
+import DownloadId from "../update-options/DownloadId";
+import FilterSelectBar from "./FilterSelectBar";
 const StudentListingTable = () => {
   // states
   const [search, setSearch] = useState("");
@@ -67,20 +78,30 @@ const StudentListingTable = () => {
     pageIndex: 0,
     pageSize: limit,
   });
-  const [sessionLength, setSessionLength] = useState<string>("all");
-  const [sessionDuration, setSessionDuration] = useState<string>("1");
-  const [course, setCourse] = useState<StudentCourseEnumType | "all">("all");
+  const [course, setCourse] = useState<StudentCourseEnumType | AllFilterType>(
+    "All Courses"
+  );
+  const [sessionRanges, setSessionRanges] = useState<string | AllFilterType>(
+    "All Sessions"
+  );
+  const [filterYear, setFilterYear] = useState<string | AllFilterType>(
+    "All Years"
+  );
+  const [gender, setGender] = useState<genderEnumType | AllFilterType>(
+    "All Genders"
+  );
   // translations
   const t = useTranslations("studentCourses");
   // queries
   const { data, isLoading } = useAllStudentsForTable({
-    pageIndex: pagination.pageIndex,
-    pageSize: limit,
+    offset: limit * pagination.pageIndex,
+    limit,
     search,
     sorting,
     course: course,
-    sessionLength: sessionLength,
-    duration: sessionDuration,
+    gender: gender,
+    sessionRange: sessionRanges,
+    yearRange: filterYear,
   });
   // table data
   const columns: ColumnDef<StudentListingType>[] = [
@@ -103,6 +124,10 @@ const StudentListingTable = () => {
     {
       accessorKey: "name",
       header: "Name",
+    },
+    {
+      accessorKey: "gender",
+      header: "Gender",
     },
     {
       accessorKey: "studentIdNo",
@@ -207,66 +232,52 @@ const StudentListingTable = () => {
       </div>
 
       <div className=" border  p-3 rounded-md mb-4 flex items-center justify-start gap-2 overflow-y-auto">
-        <h1 className="font-semibold text-emerald-500">Filters : </h1>
-        <Select onValueChange={(v) => setCourse(v as StudentCourseEnumType)}>
-          <SelectTrigger className="w-36 text-sm text-slate-200">
-            <SelectValue placeholder="Filter Course" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All</SelectItem>{" "}
-            {/* Option to clear filter */}
-            {STUDENT_COURSE_ARRAY.map((course, i) => (
-              <SelectItem key={i} value={course}>
-                {t(course)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {/* //.......................................... */}
-        <NewAddedTag>
-          <Select
-            onValueChange={(v) => {
-              setSessionDuration(v);
-              setSessionLength("all");
-            }}
-            value={sessionDuration}
-          >
-            <SelectTrigger className="w-36 text-sm text-slate-200">
-              <SelectValue placeholder="Select Duration" />
-            </SelectTrigger>
-            <SelectContent>
-              {/* Option to clear filter */}
-              {["1", "2", "3", "4"].map((item) => (
-                <SelectItem key={item} value={item}>
-                  {item} {sessionDuration === "1" ? "year" : "years"}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </NewAddedTag>
-        {/* //.................................... */}
-        <Select
-          defaultValue={sessionLength}
-          value={sessionLength}
-          onValueChange={(v) => setSessionLength(v)}
+        <Button variant={"signature"}>Filters</Button>
+        {/* testings  */}
+        <FilterSelectBar
+          dataList={STUDENT_COURSE_ARRAY}
+          value={course}
+          valueSetter={setCourse}
+          defaultValueName="All Courses"
+          translateTag="studentCourses"
+        />
+        <FilterSelectBar
+          dataList={COURSE_FILTER_YEARS}
+          value={filterYear}
+          valueSetter={setFilterYear}
+          defaultValueName="All Years"
+          suffix="years"
+        />
+        <FilterSelectBar
+          dataList={
+            filterYear !== "All Years"
+              ? filteredSessionBasedOnYear(filterYear)
+              : []
+          }
+          value={sessionRanges}
+          valueSetter={setSessionRanges}
+          defaultValueName="All Sessions"
+        />
+
+        <FilterSelectBar
+          dataList={GENDER_ARRAY}
+          value={gender}
+          valueSetter={setGender}
+          defaultValueName="All Genders"
+        />
+
+        <Button
+          onClick={() => {
+            setCourse("All Courses");
+            setSessionRanges("All Sessions");
+            setFilterYear("All Years");
+            setGender("All Genders");
+          }}
+          variant={"outline"}
+          className="text-green-500 hover:text-green-600 cursor-pointer"
         >
-          <SelectTrigger className="w-48 text-sm text-slate-200">
-            <SelectValue placeholder="Filter Session Ranges" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All</SelectItem>{" "}
-            {/* Option to clear filter */}
-            {filteredSessionBasedOnYear(sessionDuration).map((course) => (
-              <SelectItem
-                className="text-slate-300"
-                key={course}
-                value={course}
-              >
-                {course}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          Clear Filter <Filter />
+        </Button>
       </div>
 
       <Table className="text-white">

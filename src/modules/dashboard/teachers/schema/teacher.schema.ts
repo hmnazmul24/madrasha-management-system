@@ -26,6 +26,8 @@ const methodEnum = z.enum(SALARY_PAYMENTS_BD);
 export const salaryTeacherSchema = z.object({
   amount: z.string().min(1, "Amount is required"),
   bonus: z.string().optional(),
+  month: z.string().optional(),
+  year: z.string().optional(),
   method: methodEnum,
   notes: z.string().optional(),
 });

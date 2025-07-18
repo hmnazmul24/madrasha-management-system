@@ -26,6 +26,8 @@ export function handleServerError(error: unknown) {
 
   // Handle NeonDB errors (PostgreSQL errors)
   if (error instanceof NeonDbError) {
+    console.log(error);
+
     if (error.code === "23505") {
       return {
         status: 400,
@@ -54,8 +56,6 @@ export function handleServerError(error: unknown) {
   if (error instanceof DrizzleError) {
     return { status: 500, error: "Database query error." };
   }
-
-  console.log(error);
 
   // Generic fallback error
   return {

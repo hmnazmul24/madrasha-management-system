@@ -26,6 +26,7 @@
     "totalVehicleFees": "মোট যানবাহনের ফি",
     "totalAdditionalFees": "মোট অতিরিক্ত ফি",
     "totalSpendings": "মোট ব্যয়",
+    "onlyTeacherSalarySum":"শিক্ষক মোট ব্যয় ",
     "teachers": "শিক্ষকগণ",
     "students": "ছাত্রছাত্রী",
     "total": "সর্বমোট",
@@ -54,6 +55,7 @@
   }
   ,
   "studentCourses":{
+    "All Courses": "নার্সারি",
     "Play": "প্লে",
     "Nursery": "নার্সারি",
     "First Grade": "প্রথম শ্রেণি",

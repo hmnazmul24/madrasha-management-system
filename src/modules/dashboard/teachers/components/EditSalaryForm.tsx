@@ -21,10 +21,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { showMessageOrError } from "@/lib/show-message-error";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SALARY_PAYMENTS_BD } from "../constants";
+import { SALARY_PAYMENTS_BD, SALARY_YEARS } from "../constants";
 import { salaryTeacherSchema } from "../schema/teacher.schema";
 import { updateTeacherSalary } from "../server/teacher.action";
 import { SalaryTeacherSchemaType } from "../types/type";
+import { ENGLISH_MONTHS } from "../../students/constants";
 
 export default function EditSalaryForm({
   info,
@@ -40,9 +41,11 @@ export default function EditSalaryForm({
       amount: info.amount,
       bonus: info.bonus,
       method: info.method,
+      month: info.month,
       notes: info.notes,
     },
   });
+  console.log(info);
 
   // mutations
   const { isPending, mutate } = useMutation({
@@ -84,6 +87,58 @@ export default function EditSalaryForm({
               <FormLabel>Bonus</FormLabel>
               <FormControl>
                 <Input type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="month"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Salary Month (optional)</FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Month" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {ENGLISH_MONTHS.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="year"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Salary Year (optional)</FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Year" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {SALARY_YEARS.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>

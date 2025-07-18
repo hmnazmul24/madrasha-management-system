@@ -26,6 +26,7 @@
     "totalVehicleFees": "Total Vehicle Fees",
     "totalAdditionalFees": "Total Additional Fees",
     "totalSpendings": "Total Spendings",
+    "onlyTeacherSalarySum":"Only Teacher's Salary",
     "teachers": "Teachers",
     "students": "Students",
     "total": "Total",
@@ -55,6 +56,7 @@
   }
   ,
   "studentCourses":{
+    "All Courses" : "All Courses",
     "Play": "Play",
     "Nursery": "Nursery",
     "First Grade": "First Grade",

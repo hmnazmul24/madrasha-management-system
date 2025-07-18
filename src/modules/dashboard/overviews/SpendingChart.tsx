@@ -28,15 +28,28 @@ const SpendingChart = () => {
   if (!data?.allAmountAndFields) {
     return <div className="text-gray-100">Nothing Added Yet !</div>;
   }
+
+  console.log(data);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-4 p-2">
-      <CircleChart
-        amount={data.allAmount}
-        isPending={isPending}
-        title="totalSpendings"
-        color="yellow"
-        className="place-self-start w-full"
-      />
+      <div className="grid grid-cols-1 gap-3">
+        <CircleChart
+          amount={Number(data.allAmount)}
+          isPending={isPending}
+          title="totalSpendings"
+          color="yellow"
+          className="place-self-start w-full"
+        />
+        <CircleChart
+          amount={Number(data.totalTeacherSalary)}
+          isPending={isPending}
+          title="onlyTeacherSalarySum"
+          color="aqua"
+          className="place-self-start w-full"
+        />
+      </div>
+
       <SpendingBar info={data.allAmountAndFields} />
     </div>
   );

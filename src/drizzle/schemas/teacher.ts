@@ -46,6 +46,8 @@ export const salaryPayments = pgTable("salary_payments", {
     .notNull()
     .references(() => teachers.id, { onDelete: "cascade" }),
   amountPaid: integer("amount_paid").notNull(),
+  month: text("month"),
+  year: text("year"),
   bonus: integer("bonus").default(0), // Any bonus added
   paymentMethod: paymentMethodEnum("payment_method").notNull(), // Cash, Bank Transfer, etc.
   notes: text("notes"),

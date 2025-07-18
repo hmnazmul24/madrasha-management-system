@@ -48,6 +48,7 @@ export const STUDENT_COURSE_ARRAY = [
   "Business Studies",
   "Sadharon Gyan (General Knowledge)",
 ] as const;
+export const COURSE_FILTER_YEARS = ["1", "2", "3", "4"] as const;
 
 export const SESSION_RANGES = [
   "no_session",
@@ -66,20 +67,6 @@ export const SESSION_RANGES = [
   "january_2035_december_2035",
 ] as const;
 
-// export const ISLAMIC_MONTHS = [
-//   "Ramadan",
-//   "Shawwal",
-//   "Dhul-Qa'dah",
-//   "Dhul-Hijjah",
-//   "Muharram",
-//   "Safar",
-//   "Rabi' al-awwal",
-//   "Rabi' al-thani",
-//   "Jumada al-awwal",
-//   "Jumada al-thani",
-//   "Rajab",
-//   "Sha'ban",
-// ] as const;
 export const ENGLISH_MONTHS = [
   "January",
   "February",
@@ -109,3 +96,10 @@ export const ISLAMIC_YEARS_ARR = [
 export const RESULTS_ARR = ["A+", "A", "A-", "B", "C", "D", "F"];
 
 export const DURATION_YEARS = ["1", "2", "3", "4"] as const;
+
+export const ALL_FILTER_TAG = [
+  "All Courses",
+  "All Years",
+  "All Sessions",
+  "All Genders",
+] as const;
