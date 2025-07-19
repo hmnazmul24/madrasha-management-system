@@ -1,6 +1,10 @@
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { saveAs } from "file-saver";
 import { gotDataType } from "../types";
+import { SpendingFieldsEnum } from "../../spendings/types/type";
+
+// Utility to format date
+const formatDate = (date: Date) => new Date(date).toISOString().split("T")[0];
 
 export async function generateSummaryPDF(
   data: gotDataType,
@@ -8,19 +12,19 @@ export async function generateSummaryPDF(
   type: "print" | "download"
 ) {
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([595, 842]); // A4
+  let page = pdfDoc.addPage([595, 842]); // A4 size
   const { height } = page.getSize();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
   let y = height - 60;
 
-  const drawText = (
-    text: string,
-    size = 14,
+  const drawText = (text: string, size = 12, indent = 0, spacing = 20) => {
+    if (y < 80) {
+      const newPage = pdfDoc.addPage([595, 842]);
+      y = newPage.getSize().height - 60;
+      page = newPage;
+    }
 
-    bold = false,
-    indent = 0,
-    spacing = 24
-  ) => {
     page.drawText(text, {
       x: 50 + indent,
       y,
@@ -29,12 +33,9 @@ export async function generateSummaryPDF(
       color: rgb(0.1, 0.1, 0.1),
     });
     y -= spacing;
-
-    if (bold) {
-    }
   };
 
-  // === Calculate reference date range ===
+  // === Filter Data Based on Range ===
   const today = new Date();
   const days = timeRange === "7d" ? 7 : timeRange === "30d" ? 30 : 90;
   const fromDate = new Date();
@@ -45,69 +46,120 @@ export async function generateSummaryPDF(
     return d >= fromDate && d <= today;
   };
 
-  // === Filtered data ===
-  const donationData = data.earnings.donationData.filter((item) =>
-    isWithinRange(item.date)
-  );
-  const admissionData = data.earnings.admissionData.filter((item) =>
-    isWithinRange(item.date)
-  );
-  const studentFeeData = data.earnings.studentFeeData.filter((item) =>
-    isWithinRange(item.date)
-  );
-  const spendingData = data.spending.allSpendings.filter((item) =>
-    isWithinRange(item.date)
-  );
+  const dayMap = new Map<
+    string,
+    {
+      earnings: {
+        from: "donations" | "addmissions" | "studentFees";
+        amount: number;
+      }[];
+      spendings: {
+        field: SpendingFieldsEnum;
+        amount: number;
+      }[];
+    }
+  >();
 
-  // === Calculate Totals ===
-  const totalDonation = donationData.reduce(
-    (sum, item) => sum + (item.amount || 0),
-    0
-  );
-  const totalAdmission = admissionData.reduce(
-    (sum, item) => sum + (item.admissionTimePaid || 0),
-    0
-  );
-  const totalStudentFees = studentFeeData.reduce(
-    (sum, item) => sum + item.mealFees + item.educationFees,
-    0
-  );
-  const totalSpending = spendingData.reduce(
-    (sum, item) => sum + item.amount,
-    0
-  );
-  const totalEarnings = totalDonation + totalAdmission + totalStudentFees;
+  const addEarning = (
+    date: Date,
+    amount: number,
+    from: "donations" | "addmissions" | "studentFees"
+  ) => {
+    const d = formatDate(date);
+    if (!dayMap.has(d)) {
+      dayMap.set(d, { earnings: [{ amount, from }], spendings: [] });
+    } else {
+      const entry = dayMap.get(d)!;
+      const existing = entry.earnings.find((e) => e.from === from);
+      if (existing) {
+        existing.amount += amount;
+      } else {
+        entry.earnings.push({ amount, from });
+      }
+    }
+  };
 
-  // === Draw PDF Content ===
-  drawText(
-    ` ${timeRange.toUpperCase()} Financial Summary Report`,
-    18,
-    true,
-    0,
-    36
-  );
-  drawText(`Total Earnings: ${totalEarnings.toLocaleString()} taka`, 14);
-  drawText(
-    `- From Donations: ${totalDonation.toLocaleString()} taka`,
-    12,
-    false,
-    20
-  );
-  drawText(
-    `- From Admissions: ${totalAdmission.toLocaleString()} taka`,
-    12,
-    false,
-    20
-  );
-  drawText(
-    `- From Student Fees: ${totalStudentFees.toLocaleString()} taka`,
-    12,
-    false,
-    20
-  );
+  const addSpending = (
+    date: Date,
+    amount: number,
+    field: SpendingFieldsEnum
+  ) => {
+    const d = formatDate(date);
+    if (!dayMap.has(d)) dayMap.set(d, { earnings: [], spendings: [] });
+    dayMap.get(d)!.spendings.push({ amount, field });
+  };
 
-  y -= 10;
-  drawText(`Total Spendings: ${totalSpending.toLocaleString()} taka`, 14);
+  // Group all entries
+  data.earnings.donationData
+    .filter((d) => isWithinRange(d.date))
+    .forEach((d) => d.amount && addEarning(d.date, d.amount, "donations"));
+
+  data.earnings.admissionData
+    .filter((d) => isWithinRange(d.date))
+    .forEach(
+      (d) =>
+        d.admissionTimePaid &&
+        addEarning(d.date, d.admissionTimePaid, "addmissions")
+    );
+
+  data.earnings.studentFeeData
+    .filter((d) => isWithinRange(d.date))
+    .forEach((d) =>
+      addEarning(d.date, d.educationFees + d.mealFees, "studentFees")
+    );
+
+  data.spending.allSpendings
+    .filter((d) => isWithinRange(d.date))
+    .forEach((d) => addSpending(d.date, d.amount, d.field));
+
+  // Sort dates ascending
+  const sortedDates = [...dayMap.keys()].sort();
+
+  // === Start Writing to PDF ===
+  drawText(`${timeRange.toUpperCase()} Financial Summary Report`, 16, 0, 28);
+
+  for (const date of sortedDates) {
+    const entry = dayMap.get(date)!;
+    drawText(` Date: ${date}`, 14, 0, 22);
+
+    if (entry.earnings.length > 0) {
+      drawText(`Earnings:`, 12, 10);
+      let totalEarning = 0;
+      for (const earn of entry.earnings) {
+        drawText(
+          `- ${earn.from}: ${earn.amount.toLocaleString()} taka`,
+          11,
+          20
+        );
+        totalEarning += earn.amount;
+      }
+      drawText(`Total Earnings: ${totalEarning.toLocaleString()} taka`, 11, 20);
+    } else {
+      drawText(`Earnings: None`, 12, 10);
+    }
+
+    if (entry.spendings.length > 0) {
+      drawText(`Spendings:`, 12, 10, 16);
+      let totalSpending = 0;
+      for (const spend of entry.spendings) {
+        drawText(
+          `- ${spend.field}: ${spend.amount.toLocaleString()} taka`,
+          11,
+          20
+        );
+        totalSpending += spend.amount;
+      }
+      drawText(
+        `Total Spendings: ${totalSpending.toLocaleString()} taka`,
+        11,
+        20
+      );
+    } else {
+      drawText(`Spendings: None`, 12, 10);
+    }
+
+    y -= 8;
+  }
 
   const pdfBytes = await pdfDoc.save();
 
@@ -120,6 +172,6 @@ export async function generateSummaryPDF(
     );
     const win = window.open(blobUrl);
     if (win) win.print();
-    else window.location.href = blobUrl; // fallback
+    else window.location.href = blobUrl;
   }
 }

@@ -8,7 +8,7 @@ type NewAddedTagProps = {
 };
 
 // 🎯 The last date the "new" tag should be visible
-const NEW_TAG_END_DATE = new Date("2025-07-07T23:59:59");
+const NEW_TAG_END_DATE = new Date("2025-07-25T23:59:59");
 
 export default function NewAddedTag({ children, className }: NewAddedTagProps) {
   const now = new Date();
@@ -27,9 +27,9 @@ export default function NewAddedTag({ children, className }: NewAddedTagProps) {
           >
             new
           </Badge>
+          {children}
         </div>
       )}
-      {children}
     </Fragment>
   );
 }

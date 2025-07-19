@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import NewAddedTag from "../layouts/NewAddedTag";
 import { ChartAreaInteractive } from "./ChartAreaInteractive";
 import EarningChart from "./EarningChart";
 import SpendingChart from "./SpendingChart";
@@ -11,9 +10,8 @@ export const DashboardOverView = () => {
   return (
     <div>
       <div className="mb-3 mt-2">
-        <NewAddedTag className="-top-3 left-24">
-          <h1 className="ml-3 text-white">{t("recentStatus")}</h1>
-        </NewAddedTag>
+        <h1 className="ml-3 text-white">{t("recentStatus")}</h1>
+
         <ChartAreaInteractive />
       </div>
       <h1 className="ml-3 text-white">{t("allEarnings")}</h1>

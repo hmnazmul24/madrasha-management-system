@@ -34,20 +34,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { getBase64String } from "@/lib/file-to-base64";
 import { showMessageOrError } from "@/lib/show-message-error";
 import { cn } from "@/lib/utils";
-import NewAddedTag from "@/modules/dashboard/layouts/NewAddedTag";
 import {
-  STUDENT_COURSE_ARRAY,
   DURATION_YEARS,
   GENDER_ARRAY,
+  STUDENT_COURSE_ARRAY,
 } from "@/modules/dashboard/students/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CloudUpload, Delete, Paperclip } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { filteredSessionBasedOnYear } from "../../helper";
 import { AddStudentSchema } from "../../schema/student.schema";
 import { createStudent } from "../../server/student.action";
 import { AddStudentSchemaType } from "../../types";
-import { useTranslations } from "next-intl";
 
 export default function CreateStudentForm() {
   const qc = useQueryClient();
@@ -267,9 +266,8 @@ export default function CreateStudentForm() {
           name="sessionDuration"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <NewAddedTag className="top-0 -right-34">
-                <FormLabel>Session Duration *</FormLabel>
-              </NewAddedTag>
+              <FormLabel>Session Duration *</FormLabel>
+
               <FormControl>
                 <div className="flex flex-row  flex-wrap gap-2">
                   {DURATION_YEARS.map((option, i) => (

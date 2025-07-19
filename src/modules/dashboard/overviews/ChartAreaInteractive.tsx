@@ -37,6 +37,7 @@ import {
   formatLongNumber,
   generate90DaySummary,
 } from "./helper";
+import { generateSummaryPDF } from "./helper/pdf-and-print";
 
 export const description = "An interactive area chart";
 
@@ -118,12 +119,12 @@ export function ChartAreaInteractive() {
           </CardDescription>
           <div className="flex gap-2">
             <Button
-            // onClick={() => generateSummaryPDF(data, timeRange, "print")}
+              onClick={() => generateSummaryPDF(data, timeRange, "print")}
             >
               {t("print")} <Printer />
             </Button>
             <Button
-            // onClick={() => generateSummaryPDF(data, timeRange, "download")}
+              onClick={() => generateSummaryPDF(data, timeRange, "download")}
             >
               {t("pdfDownload")} <Download />
             </Button>

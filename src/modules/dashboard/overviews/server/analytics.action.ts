@@ -124,7 +124,11 @@ export const recentStatus = async () => {
   const [donationData, admissionData, studentFeeData, totalTeacherSalarySpent] =
     await Promise.all([
       db
-        .select({ amount: donations.amount, date: donations.createdAt })
+        .select({
+          amount: donations.amount,
+          donor: donations.donorName,
+          date: donations.createdAt,
+        })
         .from(donations)
         .where(eq(donations.madrashaId, madrashaId)),
       db
@@ -148,7 +152,11 @@ export const recentStatus = async () => {
     ]);
 
   const allSpendings = await db
-    .select({ amount: spendings.amount, date: spendings.createdAt })
+    .select({
+      amount: spendings.amount,
+      field: spendings.spendingField,
+      date: spendings.createdAt,
+    })
     .from(spendings)
     .where(eq(spendings.madrashaId, madrashaId));
 

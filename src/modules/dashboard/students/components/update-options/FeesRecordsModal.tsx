@@ -16,13 +16,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { showMessageOrError } from "@/lib/show-message-error";
 import Loading from "@/modules/dashboard/components/Loading";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { deleteFeesRecords, getFeesRecords } from "../../server/fees.action";
-import { showMessageOrError } from "@/lib/show-message-error";
-import NewAddedTag from "@/modules/dashboard/layouts/NewAddedTag";
 
 const FessRecordsModal = ({
   children,
@@ -86,16 +85,11 @@ const FessRecordsModal = ({
                       <TableHead>Education Fees</TableHead>
 
                       <TableHead>
-                        <NewAddedTag>
-                          <span>Vehicle Fees</span>
-                        </NewAddedTag>
+                        <span>Vehicle Fees</span>
                       </TableHead>
 
                       <TableHead>
-                        {" "}
-                        <NewAddedTag>
-                          <span>Additional Fees</span>
-                        </NewAddedTag>
+                        <span>Additional Fees</span>
                       </TableHead>
 
                       <TableHead>Month</TableHead>

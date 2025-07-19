@@ -19,6 +19,7 @@ import {
   Mars,
   ScanFace,
   Send,
+  Settings,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -90,6 +91,16 @@ export const sidebarOptions = [
         nameKey: "sidebar.addDonor",
         url: "/dashboard/donation/create",
         icon: Gem,
+      },
+    ],
+  },
+  {
+    section: "Settings",
+    options: [
+      {
+        nameKey: "sidebar.preferrenceSettings",
+        url: "/dashboard/settings",
+        icon: Settings,
       },
     ],
   },

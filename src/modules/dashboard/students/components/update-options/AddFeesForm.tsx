@@ -25,7 +25,6 @@ import { getMonthsBetweenRange } from "../../helper";
 import { studentFeesSchema } from "../../schema/fees.schema";
 import { createStudentFees } from "../../server/fees.action";
 import { StudentFeesSchemaType } from "../../types";
-import NewAddedTag from "@/modules/dashboard/layouts/NewAddedTag";
 
 export default function AddFeesForm({
   session,
@@ -109,9 +108,8 @@ export default function AddFeesForm({
           name="vehicle_fees"
           render={({ field }) => (
             <FormItem>
-              <NewAddedTag className="-top-3">
-                <FormLabel>Vehicle fees </FormLabel>
-              </NewAddedTag>
+              <FormLabel>Vehicle fees </FormLabel>
+
               <FormControl>
                 <Input
                   placeholder="Give vehicle fare"
@@ -130,9 +128,8 @@ export default function AddFeesForm({
           name="additional_fees"
           render={({ field }) => (
             <FormItem>
-              <NewAddedTag className="-top-3">
-                <FormLabel>Additional fees </FormLabel>
-              </NewAddedTag>
+              <FormLabel>Additional fees </FormLabel>
+
               <FormControl>
                 <Input
                   placeholder="Give additional fare"

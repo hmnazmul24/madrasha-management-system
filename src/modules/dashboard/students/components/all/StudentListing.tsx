@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { ProductTableSkeleton } from "@/modules/dashboard/components/ProductTableSkeleton";
-import NewAddedTag from "@/modules/dashboard/layouts/NewAddedTag";
 import {
   ColumnDef,
   flexRender,
@@ -160,9 +159,7 @@ const StudentListingTable = () => {
                   madrashaName: data?.madrashaName,
                 }}
               >
-                <NewAddedTag className="left-24 -top-2">
-                  <span>Download Id</span>
-                </NewAddedTag>
+                <span>Download Id</span>
               </DownloadId>
               <AddFeesModal
                 studentId={info.row.original.id}

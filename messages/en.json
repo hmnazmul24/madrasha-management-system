@@ -9,7 +9,8 @@
     "teacherList": "Teachers Lists",
     "createTeacher": "Create Teacher",
     "donationHistory": "Donation History",
-    "addDonor": "Add Donor"
+    "addDonor": "Add Donor",
+    "preferrenceSettings": "preferrence settings"
   },
   "term":{
     "recentStatus": "Recent Status",

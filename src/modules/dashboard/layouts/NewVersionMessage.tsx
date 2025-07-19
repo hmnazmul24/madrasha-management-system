@@ -3,8 +3,8 @@
 import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
 
-const LOCAL_STORAGE_KEY = "newVersionAccepted5";
-const LOCAL_STORAGE_KEY_PREVIOUS = "newVersionAccepte4";
+const LOCAL_STORAGE_KEY = "newVersionAccepted6";
+const LOCAL_STORAGE_KEY_PREVIOUS = "newVersionAccepte5";
 
 const NewVersionMessage = () => {
   const [visible, setVisible] = useState(false);
@@ -25,14 +25,13 @@ const NewVersionMessage = () => {
   if (!visible) return null;
 
   return (
-    <div className="flex items-center justify-evenly p-4 gap-3 bg-gradient-to-r from-stone-900 via-gray-800 to-black">
+    <div className="flex items-center justify-evenly p-4 gap-3 bg-gradient-to-r from-red-900 via-purple-800 to-green-900">
       <div className="text-white text-xs md:text-base space-y-2">
-        <h1 className="mb-2 text-xl font-semibold text-blue-500">
+        <h1 className="mb-2 text-xl font-semibold text-white">
           Just Updated 🚀
         </h1>
-        <p className="text-green-600">
-          {`Experience enhanced : 1.student filterings (gender filter, and
-          others), 2.teacher salary record (added year and month), 3.teacher salary now included in spending chart 4. further development will be avilable soon, InshaAllah`}
+        <p className="text-white">
+          {`Experience enhanced : now you can change your password by going through settings/preferrence and may get slightly detail financial status info pdf`}
         </p>
       </div>
       <Badge onClick={handleAccept} className="cursor-pointer rounded-full">

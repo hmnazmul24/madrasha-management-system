@@ -9,7 +9,8 @@
     "teacherList": "শিক্ষক তালিকা",
     "createTeacher": "নতুন শিক্ষক যোগ করুন",
     "donationHistory": "ডোনেশন ইতিহাস",
-    "addDonor": "ডোনার যোগ করুন"
+    "addDonor": "ডোনার যোগ করুন",
+     "preferrenceSettings": "পছন্দ সেটিংস"
   },
   "term": {
     "recentStatus": "সাম্প্রতিক অবস্থা",
